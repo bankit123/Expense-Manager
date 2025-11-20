@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_bg"
+    android:fitsSystemWindows="true"
+    tools:context=".Menu_Screen.Add_Transaction.Recurring_Payment.Recurring_Payment_Activity">
+
+<!--Header-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp">
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back_btn"
+            app:tint="@color/ic_color" />
+
+        <!-- Title (Always Centered) -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Recurring Payment"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/opposite_color"
+            android:layout_centerInParent="true"
+            android:gravity="center" />
+
+        <!-- Close Button -->
+        <ImageView
+            android:id="@+id/ivAddRecurringPayment"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="@color/nav_icon_active" />
+
+    </RelativeLayout>
+
+    <!-- 🔘 Status Filter Segment -->
+    <LinearLayout
+        android:id="@+id/statusFilterSegment"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_segment_container"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <!-- Active -->
+        <TextView
+            android:id="@+id/tvActive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_segment_unselected"
+            android:gravity="center"
+            android:text="Active"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Paused -->
+        <TextView
+            android:id="@+id/tvPaused"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_segment_unselected"
+            android:gravity="center"
+            android:text="Paused"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Completed -->
+        <TextView
+            android:id="@+id/tvCompleted"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_segment_unselected"
+            android:gravity="center"
+            android:text="Completed"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <!-- RecyclerView for recurring list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecurringPayments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_recurring_payment" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_repeat"
+            app:tint="?android:attr/textColorHint" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No recurring payments yet"
+            android:textColor="?android:attr/textColorHint"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

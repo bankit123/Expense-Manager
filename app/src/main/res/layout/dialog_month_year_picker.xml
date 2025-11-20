@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bg_bottomsheet_rounded"
+    android:clipToOutline="true">
+
+    <!-- Sheet handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@drawable/bg_sheet_handle"
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Title -->
+    <TextView
+        android:text="Select Month &amp; Year"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/opposite_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp" />
+
+    <!-- Pickers -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <NumberPicker
+            android:id="@+id/monthPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <NumberPicker
+            android:id="@+id/yearPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp" />
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/btnToday"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Today"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/opposite_color" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/btnCancel"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:text="Cancel"-->
+<!--            android:textSize="14sp"-->
+<!--            android:padding="8dp"-->
+<!--            android:textColor="@color/nav_icon_default" />-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/btnSave"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@drawable/bg_btn_save">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/btnOk"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:text="OK"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingVertical="6dp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                android:backgroundTint="@color/red"-->
+<!--                android:visibility="visible"/>-->
+
+<!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_btn_save"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_ok"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:paddingVertical="12dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="16dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

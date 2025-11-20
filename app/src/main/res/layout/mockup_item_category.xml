@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingVertical="16dp"
+    android:layout_marginHorizontal="3dp"
+    android:layout_marginTop="3dp"
+    android:background="@drawable/bg_card_bottomsheet"
+    android:layout_marginBottom="3dp">
+
+    <!-- Icon inside circular background -->
+    <FrameLayout
+        android:id="@+id/iconBackground"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_rounded_user_profile"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/ivCategoryIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_category"
+            android:tint="@android:color/white" />
+    </FrameLayout>
+
+    <!-- Category Name -->
+    <TextView
+        android:id="@+id/tvCategoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Category"
+        android:paddingHorizontal="5dp"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>

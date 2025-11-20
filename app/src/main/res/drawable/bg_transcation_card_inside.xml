@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/co_bg_transaction_card_inside"/>
+    <corners android:radius="8dp"/>
+</shape>

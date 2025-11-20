@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "694972959761",
+    "project_id": "trackmyspend-expense-manager",
+    "storage_bucket": "trackmyspend-expense-manager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694972959761:android:51176fd718a64a1302f5b0",
+        "android_client_info": {
+          "package_name": "trackmyspend.budgetplanner.expensemanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYjDFiTQlCCZOMfkOLwEOWKRHC99VwCTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,20 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 🔴 Gradient red background -->
+    <solid android:color="@color/main_bg" />
+
+    <!-- 🟢 Rounded corners (only top-right & bottom-right) -->
+    <corners
+        android:topLeftRadius="0dp"
+        android:bottomLeftRadius="0dp"
+        android:topRightRadius="16dp"
+        android:bottomRightRadius="16dp" />
+
+    <!-- Optional subtle shadow / padding -->
+    <padding
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp" />
+</shape>

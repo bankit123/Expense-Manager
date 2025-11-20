@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="8dp"
+    android:background="@color/main_bg"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvCurrencySymbol"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:text="₹"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/opposite_color" />
+
+    <TextView
+        android:id="@+id/tvCurrencyName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Indian Rupee (INR)"
+        android:textColor="@color/opposite_color"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/rbSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+</LinearLayout>

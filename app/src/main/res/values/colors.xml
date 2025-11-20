@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="opposite_color">#000000</color>
+    <color name="same_color">#FFFFFF</color>
+    <color name="main_bg">#FFFFFF</color>
+
+    <!-- Navbar -->
+    <color name="nav_bg">#FAFAFA</color>
+    <color name="nav_icon_default">#808080</color> <!-- Gray -->
+    <color name="nav_icon_active">#1E88E5</color> <!-- Blue 600 -->
+    <color name="filter_bg_color">#E7E7E7</color>
+    <!-- FAB -->
+    <color name="fab_background">#000000</color>
+    <color name="fab_icon">#FFFFFF</color>
+
+    <color name="ic_color">#000000</color>
+    <color name="bg_border_card">#76070707</color>
+
+    <color name="input_color">#FFFFFF</color>
+    <color name="bg_account_details">#BEF2F2F2</color>
+    <color name="bg_card">#A2F2F2F2</color>
+
+<!--   add transction screen-->
+    <color name="co_bg_transaction_card_inside">#EBEBEB</color>
+    <color name="co_bottomBarBackground">#F4F4F4</color>
+    <color name="co_bg_delete_btn">#FD5454</color>
+
+<!--    home-->
+    <color name="bg_profile_color">#F0F0F0</color>
+    <color name="red">#F03535</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="spending">#FFF6F6</color>
+    <color name="spending_arrow">#E57373</color>
+    <color name="income">#F1FFF2</color>
+    <color name="income_arrow">#81C784</color>
+    <color name="co_bg_group_date">#FAFAFA</color>
+    <color name="bg_co_empty_list">#E7E4E4</color>
+    <color name="list_hr">#3A858585</color>
+
+<!--    delete-->
+    <color name="spend_red_light">#FF4A4A</color>
+    <color name="spend_red_light_translucent">#33FF4A4A</color>
+
+
+<!--    profile-->
+    <color name="gray">#9E9E9E</color>
+    <color name="hr">#858585</color>
+    <color name="setting_boarder">#E7E4E4</color>
+
+<!--    Account Details-->
+    <color name="co_bg_bottomsheet">#F2F2F2</color>
+    <color name="toggle_selected_bg">#E3F2FD</color>
+
+    <color name="account_card_bg">#111827</color> <!-- dark card -->
+    <color name="account_card_border">#1F2937</color>
+    <color name="subtype_bg">#1C2533</color>
+
+
+    <color name="red_recurring_payment">#EF788A</color>
+    <color name="green_500">#9ED99E</color>
+    <color name="orange_soft">#F2BC6B</color>
+    <color name="upcoming_color">#FFAD0B</color>
+
+
+
+
+</resources>

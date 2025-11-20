@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:title="Home"
+        android:icon="@drawable/ic_menu_home" />
+
+    <item
+        android:id="@+id/nav_analysis"
+        android:title="Analysis"
+        android:icon="@drawable/ic_menu_analysis" />
+
+
+    <item
+        android:id="@+id/nav_account"
+        android:title="Account"
+        android:icon="@drawable/ic_menu_account" />
+
+<!--    <item-->
+<!--        android:id="@+id/nav_reminder"-->
+<!--        android:title="Reminder"-->
+<!--        android:icon="@drawable/ic_menu_reminader" />-->
+
+    <item
+        android:id="@+id/nav_backup"
+        android:title="Backup"
+        android:icon="@drawable/ic_backup" />
+
+
+</menu>

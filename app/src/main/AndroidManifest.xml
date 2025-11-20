@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ExpenseManager"
+        tools:targetApi="31">
+        <activity
+            android:name=".Profile.DarkMode_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".OnBoarding_Screen.Allow_Notification_Activity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".Util.UpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Home.Pay_Recurring_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Add_Transaction.Recurring_Payment.Recurring_payment_Details"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Add_Transaction.Recurring_Payment.Add_Recurring_Payment_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Add_Transaction.Recurring_Payment.Recurring_Payment_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Account_Screen.Add_Account_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Profile.Subtype.Subtype_For_Profile_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Profile.Privacy_Policy_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Profile.AboutUs_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Profile.Categories.Categories_For_Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Reminder_Screen.EmiDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Reminder_Screen.AddEmiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OnBoarding_Screen.Onboarding_Activity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".Menu_Screen.MainUtils.Category.AddCategory_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Splash_Screen_Activity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Profile.Profile_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Account_Screen.Account_Details_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu_Screen.Add_Transaction.AddTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".Util.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+    </application>
+
+</manifest>

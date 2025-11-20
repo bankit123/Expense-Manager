@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".Menu_Screen.Add_Transaction.Recurring_Payment.Add_Recurring_Payment_Activity">
+
+
+    <!-- SCROLLABLE CONTENT -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <!--Header-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <!-- Back Button -->
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_back_btn"
+                    app:tint="@color/ic_color" />
+
+                <!-- Title (Always Centered) -->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Add Recurring Payment"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Close Button -->
+                <!--        <ImageView-->
+                <!--            android:id="@+id/ivAddRecurringPayment"-->
+                <!--            android:layout_width="28dp"-->
+                <!--            android:layout_height="28dp"-->
+                <!--            android:layout_alignParentEnd="true"-->
+                <!--            android:layout_centerVertical="true"-->
+                <!--            android:src="@android:drawable/ic_input_add"-->
+                <!--            app:tint="@color/nav_icon_active" />-->
+
+            </RelativeLayout>
+
+            <!--            spend income-->
+            <LinearLayout
+                android:id="@+id/spendIncomeSegment"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_segment_container"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <!-- Spend -->
+                <TextView
+                    android:id="@+id/tvSpend"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segment_unselected"
+                    android:gravity="center"
+                    android:text="Spend"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!-- Income -->
+                <TextView
+                    android:id="@+id/tvIncome"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segment_unselected"
+                    android:gravity="center"
+                    android:text="Income"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!--            Amount-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="28dp">
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/tvAmountTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Amount spent"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <!-- Amount Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <!-- Rupee Prefix -->
+                    <TextView
+                        android:id="@+id/currencySymbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="₹"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="30sp" />
+
+                    <!-- Amount Input -->
+                    <EditText
+                        android:id="@+id/etAmount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="Enter amount"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:textColor="@color/opposite_color"
+                        android:textColorHint="?android:attr/textColorHint"
+                        android:textSize="18sp" />
+
+
+                    <!-- Arrow icon -->
+                    <!--                    <ImageView-->
+                    <!--                        android:layout_width="20dp"-->
+                    <!--                        android:layout_height="20dp"-->
+                    <!--                        android:src="@drawable/ic_forward"-->
+                    <!--                        android:tint="?android:attr/textColorHint" />-->
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="200dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:alpha="0.4"
+                    android:background="?android:attr/textColorHint" />
+
+                <!-- Date Row -->
+                <LinearLayout
+                    android:id="@+id/layoutDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Date &amp; time"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                    <!-- Selected Date & Time -->
+                    <TextView
+                        android:id="@+id/tvDateTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:paddingVertical="16dp"
+                        android:text="Today, 4:37 pm"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                    <!-- Calendar Icon -->
+                    <ImageView
+                        android:id="@+id/ivCalendar"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="Pick date"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/opposite_color" />
+                </LinearLayout>
+
+                <!-- Paid To Row -->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:background="@drawable/bg_transcation_card_inside"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvPayeeLabel"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:paddingStart="16dp"-->
+<!--                        android:text="Paid to"-->
+<!--                        android:textColor="@color/opposite_color"-->
+<!--                        android:textSize="13sp" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/etPayee"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:gravity="end"-->
+<!--                        android:hint="Enter the name or place"-->
+<!--                        android:imeOptions="actionDone"-->
+<!--                        android:inputType="textCapWords"-->
+<!--                        android:paddingVertical="16dp"-->
+<!--                        android:paddingEnd="16dp"-->
+<!--                        android:textColor="@color/opposite_color"-->
+<!--                        android:textColorHint="?android:attr/textColorHint"-->
+<!--                        android:textSize="13sp" />-->
+
+<!--                </LinearLayout>-->
+
+            </LinearLayout>
+
+            <!-- 🔹 TITLE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="Netflix, Rent, SIP, etc."
+                    android:inputType="textCapWords"
+                    android:imeOptions="actionDone"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/opposite_color"
+                    android:textColorHint="?android:attr/textColorHint"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 🔹 CATEGORY -->
+            <LinearLayout
+                android:id="@+id/layoutCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="24dp">
+
+                <ImageView
+                    android:id="@+id/ivCategoryIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_category"
+                    app:tint="@color/opposite_color" />
+
+                <TextView
+                    android:id="@+id/tvCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:text="Select Category"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_dropdown"
+                    app:tint="@color/opposite_color" />
+            </LinearLayout>
+
+            <!-- 🔹 PAYMENT METHOD (Subtype) -->
+
+            <!-- 🔹 FREQUENCY -->
+
+            <LinearLayout
+                android:id="@+id/layoutSubtype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="24dp">
+
+                <ImageView
+                    android:id="@+id/ivSubtypeIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_bank"
+                    app:tint="@color/opposite_color" />
+
+                <TextView
+                    android:id="@+id/tvSubtype"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:text="Select Payment Method"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_dropdown"
+                    app:tint="@color/opposite_color" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutFrequency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="24dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_repeat"
+                    app:tint="@color/opposite_color" />
+
+                <TextView
+                    android:id="@+id/tvFrequency"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:text="Select Frequency"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_dropdown"
+                    app:tint="@color/opposite_color" />
+            </LinearLayout>
+
+
+            <!-- 🔹 NUMBER OF PAYMENTS + SWITCHES -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Repeat Forever Row -->
+                <LinearLayout
+                    android:id="@+id/layoutRepeatForever"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <!-- Left Section: Label + Help Text -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvRepeatForeverLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Repeat Forever"
+                            android:textColor="@color/opposite_color"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <!-- Help Text -->
+                        <TextView
+                            android:id="@+id/tvRepeatHelp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="Turn this on if this recurring payment has no fixed number of payments or end date."
+                            android:textColor="?android:attr/textColorHint"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- Right Section: Switch -->
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchRepeatForever"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:checked="false"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint" />
+
+                </LinearLayout>
+
+                <!-- Number of Payments -->
+                <LinearLayout
+                    android:id="@+id/layoutPaymentCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Number of Payments"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etPaymentCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter number"
+                        android:inputType="number"
+                        android:paddingTop="8dp"
+                        android:textColor="@color/opposite_color"
+                        android:textColorHint="?android:attr/textColorHint"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!-- 🔹 START / END DATE -->
+            <LinearLayout
+                android:id="@+id/layoutDates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!--                starting date-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Start Date"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvStartDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="Today"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <!--                ending date-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="End Date"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvEndDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 🔹 NOTES -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notes"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="Tap to add"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minLines="2"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/opposite_color"
+                    android:textColorHint="?android:attr/textColorHint"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 🔹 BOTTOM SAVE BUTTON -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_bg"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_save"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_save"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="12dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="16dp"
+                android:text="Save"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

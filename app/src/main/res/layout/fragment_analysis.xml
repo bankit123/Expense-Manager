@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    tools:context="trackmyspend.budgetplanner.expensemanager.Menu_Screen.Analysis_Screen.AnalysisFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Analysis"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/dropdownContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_spinner"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/tvSelectedFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:text="Income"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivDropdownArrow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/ic_dropdown"
+                        app:tint="@color/opposite_color" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <!--        filter-->
+            <LinearLayout
+                android:id="@+id/filterSegment"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_segment_container"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <!-- Weekly -->
+                <TextView
+                    android:id="@+id/tvWeekly"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segment_unselected"
+                    android:gravity="center"
+                    android:text="Weekly"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <!-- Monthly -->
+                <TextView
+                    android:id="@+id/tvMonthly"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segment_unselected"
+                    android:gravity="center"
+                    android:text="Monthly"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <!-- Yearly -->
+                <TextView
+                    android:id="@+id/tvYearly"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segment_unselected"
+                    android:gravity="center"
+                    android:text="Yearly"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <!-- Period -->
+                <TextView
+                    android:id="@+id/tvPeriod"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segment_unselected"
+                    android:gravity="center"
+                    android:text="Period"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- PieChart -->
+
+            <trackmyspend.budgetplanner.expensemanager.DB.Graph.CustomPieChartView
+                android:id="@+id/customPieChart"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/noGraphPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="66dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_no_graph"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Graph Preview Yet"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="10sp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp" />
+
+<!--                <FrameLayout-->
+<!--                    android:id="@+id/banner_container"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="bottom"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:visibility="gone" />-->
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvCategoryBreakdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spending by Category"
+                android:textColor="@color/opposite_color"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="2dp"/>
+
+            <TextView
+                android:id="@+id/tvTransactionSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Showing transactions"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCategorySummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"/>
+
+            <!-- Empty State View -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:paddingVertical="65dp"
+                android:background="@drawable/bg_empty_list"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_emptylist"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Transactions Yet"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="10sp"
+                    android:layout_marginTop="8dp" />
+
+                <!--                    <FrameLayout-->
+                <!--                        android:id="@+id/banner_container2"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_gravity="bottom"-->
+                <!--                        android:layout_marginTop="16dp"-->
+                <!--                        android:visibility="gone" />-->
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</RelativeLayout>

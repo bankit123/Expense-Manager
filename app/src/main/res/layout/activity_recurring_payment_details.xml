@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".Menu_Screen.Add_Transaction.Recurring_Payment.Recurring_payment_Details">
+
+    <!-- Scrollable Info Section -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerPadding="8dp"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_back_btn"
+                    app:tint="@color/opposite_color" />
+
+                <TextView
+                    android:id="@+id/tvHeaderTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Recurring Payment Details"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!--            Title-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvPayeeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Title"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecurringTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="16dp"
+                        android:text="Netflix Subscription"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Amount"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecurringAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="16dp"
+                        android:text="₹499.00"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <!--            Frquency-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Frequency"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecurringFrequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="16dp"
+                        android:text="Monthly"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/pauseSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Pause Recurring Payment Row -->
+                <LinearLayout
+                    android:id="@+id/layoutPauseRecurring"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <!-- Left Section: Label + Help Text -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvPauseLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Active Recurring Payment"
+                            android:textColor="@color/opposite_color"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <!-- Help Text -->
+                        <TextView
+                            android:id="@+id/tvPauseHelp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="Turn this off to temporarily stop upcoming payments."
+                            android:textColor="?android:attr/textColorHint"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- Right Section: Switch -->
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchPauseRecurring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:checked="true"
+                        android:scaleX="0.9"
+                        android:scaleY="0.9"
+                        android:enabled="true"
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <!-- Start Date -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!--                starting date-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Start Date"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecurringStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="Today"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <!--                ending date-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="End Date"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecurringEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="None"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <!-- Next Due -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_card_account_details"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Next Due:"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecurringNextDue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="16dp"
+                        android:text="Oct 23, 2025"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 🔹 NUMBER OF PAYMENTS + SWITCHES -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Repeat Forever Row -->
+                <LinearLayout
+                    android:id="@+id/layoutRepeatForever"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <!-- Left Section: Label + Help Text -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvRepeatForeverLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Repeat Forever"
+                            android:textColor="@color/opposite_color"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <!-- Help Text -->
+                        <TextView
+                            android:id="@+id/tvRepeatHelp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="Turn this on if this recurring payment has no fixed number of payments or end date."
+                            android:textColor="?android:attr/textColorHint"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- Right Section: Switch -->
+<!--                    <com.google.android.material.materialswitch.MaterialSwitch-->
+<!--                        android:id="@+id/switchRepeatForever"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="32dp"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:checked="false"-->
+<!--                        android:clickable="false"-->
+<!--                        android:enabled="false"-->
+<!--                        android:focusable="false"-->
+<!--                        android:scaleX="0.8"-->
+<!--                        android:scaleY="0.8"-->
+<!--                        app:thumbTint="@color/switch_thumb_tint"-->
+<!--                        app:trackTint="@color/switch_track_tint" />-->
+
+
+                </LinearLayout>
+
+                <!-- Number of Payments -->
+                <LinearLayout
+                    android:id="@+id/layoutPaymentCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_transcation_card_inside"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Number of Payments"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPaymentCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="None"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Notes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_account_details"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notes"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="2dp"
+                    android:text="Auto debit via HDFC card"
+                    android:textColor="?android:attr/textColorHint"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <!-- Pause / Resume -->
+        <LinearLayout
+            android:id="@+id/btnShowTransaction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_save"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:id="@+id/tvPauseResume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show Transaction"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!--        &lt;!&ndash; Delete &ndash;&gt;-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/btnDelete"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="@drawable/bg_btn_delete"-->
+        <!--            android:gravity="center"-->
+        <!--            android:paddingVertical="12dp"-->
+        <!--            android:paddingHorizontal="16dp">-->
+
+        <!--            <TextView-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:text="Delete"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:textSize="13sp"-->
+        <!--                android:textStyle="bold" />-->
+        <!--        </LinearLayout>-->
+    </LinearLayout>
+</LinearLayout>

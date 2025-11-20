@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/textLoanName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loan Name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textLender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lender" />
+
+    <TextView
+        android:id="@+id/textPrincipal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Principal" />
+
+    <TextView
+        android:id="@+id/textInterestRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Interest" />
+
+    <TextView
+        android:id="@+id/textEmiAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EMI" />
+
+    <TextView
+        android:id="@+id/textTenure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tenure" />
+
+    <TextView
+        android:id="@+id/textPaidInstallments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paid" />
+
+    <TextView
+        android:id="@+id/textStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start" />
+
+    <TextView
+        android:id="@+id/textEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End" />
+
+    <TextView
+        android:id="@+id/textNextDue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Due" />
+
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status" />
+</LinearLayout>

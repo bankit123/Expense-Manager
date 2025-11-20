@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <!-- Light blue background -->
+    <solid android:color="#E3F2FD" /> <!-- You can adjust to match your theme -->
+
+    <!-- Border (active color) -->
+    <stroke
+        android:width="1dp"
+        android:color="@color/nav_icon_active" />
+
+    <!-- Rounded corners for pill style -->
+    <corners android:radius="50dp" />
+</shape>

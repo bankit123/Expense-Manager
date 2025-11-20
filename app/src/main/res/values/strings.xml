@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Expense Manager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">delete</string>
+    <string name="ad_icon_desc">ads des</string>
+
+    <string-array name="category_types">
+        <item>Expense</item>
+        <item>Income</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
+    <string name="facebook_app_id">1126911549528767</string>
+
+
+</resources>
