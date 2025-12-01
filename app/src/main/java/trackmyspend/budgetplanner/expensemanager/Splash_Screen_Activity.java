@@ -21,6 +21,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.microsoft.clarity.Clarity;
+import com.microsoft.clarity.ClarityConfig;
+import com.microsoft.clarity.models.LogLevel;
 
 import java.util.concurrent.Executors;
 
@@ -54,6 +57,10 @@ public class Splash_Screen_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash_screen);
+
+        ClarityConfig config = new ClarityConfig("uepwmjzs8a");
+        config.setLogLevel(LogLevel.None);  // default is None
+        Clarity.initialize(getApplicationContext(), config);
 
         // Now db is initialized → safe
         db = AppDatabase.getDatabase(this);

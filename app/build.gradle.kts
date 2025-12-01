@@ -12,8 +12,8 @@ android {
         applicationId = "trackmyspend.budgetplanner.expensemanager"
         minSdk = 26
         targetSdk = 36
-        versionCode = 5
-        versionName = "0.1.5"
+        versionCode = 6
+        versionName = "0.1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -73,5 +73,6 @@ dependencies {
     implementation ("com.google.android.play:app-update:2.1.0")
     implementation ("com.google.android.play:app-update-ktx:2.1.0")
     implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
+    implementation("com.microsoft.clarity:clarity:3.+")
 
 }
