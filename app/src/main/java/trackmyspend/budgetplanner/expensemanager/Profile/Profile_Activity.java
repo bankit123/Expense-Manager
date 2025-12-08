@@ -2,11 +2,13 @@ package trackmyspend.budgetplanner.expensemanager.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import trackmyspend.budgetplanner.expensemanager.OnBoarding_Screen.Currency_Input_Fragment;
 import trackmyspend.budgetplanner.expensemanager.Profile.Categories.Categories_For_Profile;
@@ -61,6 +63,13 @@ public class Profile_Activity extends AppCompatActivity implements Currency_Inpu
             startActivity(intent);
         });
 
+//        backup
+        LinearLayout backupLayout = findViewById(R.id.backup);
+        backupLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(Profile_Activity.this, BackupActivity.class);
+            startActivity(intent);
+        });
+
         LinearLayout privacyPolicyLayout = findViewById(R.id.PrivacyPolicy);
         privacyPolicyLayout.setOnClickListener(v -> {
             Intent intent = new Intent(Profile_Activity.this, Privacy_Policy_Activity.class);
@@ -91,6 +100,8 @@ public class Profile_Activity extends AppCompatActivity implements Currency_Inpu
         });
 
     }
+
+
 
     private void openCurrencyChange() {
         Currency_Input_Fragment fragment = new Currency_Input_Fragment();

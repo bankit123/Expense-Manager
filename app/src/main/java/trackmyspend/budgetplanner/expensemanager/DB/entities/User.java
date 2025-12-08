@@ -16,6 +16,7 @@ public class User {
     public String currency_symbol; // e.g. ₹
     public String locale_tag;      // ✅ e.g. "en_IN" or "en_US"
     public String mode;
+    public int remaining_transaction_cnt;         //add in version 3
     public Date created_at;
     public Date updated_at;
 }

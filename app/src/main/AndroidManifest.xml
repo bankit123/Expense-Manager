@@ -18,12 +18,14 @@
         android:theme="@style/Theme.ExpenseManager"
         tools:targetApi="31">
         <activity
+            android:name=".Profile.BackupActivity"
+            android:exported="false" />
+        <activity
             android:name=".Profile.DarkMode_Activity"
             android:exported="false" />
         <activity
             android:name=".OnBoarding_Screen.Allow_Notification_Activity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Util.UpdateActivity"
             android:exported="false" />

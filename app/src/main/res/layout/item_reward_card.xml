@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">
+
+    <!-- ITEM ROW -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Gift Icon -->
+        <ImageView
+            android:id="@+id/imgGift"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_gift"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside" />
+
+        <!-- Title + Points -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="16dp">
+
+            <TextView
+                android:id="@+id/tvRewardTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7 days of free Superz"
+                android:textColor="@color/opposite_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRewardPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100 Points"
+                android:textColor="@color/opposite_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Claim Button -->
+        <TextView
+            android:id="@+id/btnClaim"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            android:text="Claim"
+            android:textSize="13sp"
+            android:textColor="@color/opposite_color"
+            android:background="@drawable/bg_card_account_details"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/setting_boarder" />
+
+</LinearLayout>

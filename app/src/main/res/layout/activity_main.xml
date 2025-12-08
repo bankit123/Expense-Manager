@@ -128,7 +128,7 @@
 
         <!-- Reminder -->
         <LinearLayout
-            android:id="@+id/nav_backup"
+            android:id="@+id/nav_reward"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -136,16 +136,16 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/icon_backup"
+                android:id="@+id/icon_reward"
                 android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_backup" />
+                android:layout_height="17dp"
+                android:src="@drawable/ic_reward" />
 
             <TextView
-                android:id="@+id/title_backup"
+                android:id="@+id/title_reward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Backup"
+                android:text="Reward"
                 android:layout_marginTop="3dp"
                 android:textSize="10sp" />
         </LinearLayout>

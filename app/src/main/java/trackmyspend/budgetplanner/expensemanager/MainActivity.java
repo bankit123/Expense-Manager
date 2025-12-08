@@ -37,9 +37,9 @@ import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Account_Screen.Acco
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.AddTransactionActivity;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.Recurring_Payment.Worker.RecurringSchedulerWorker;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Analysis_Screen.AnalysisFragment;
-import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Backup_Screen.Backup_Fragment;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home.HomeFragment;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Reminder_Screen.ReminderFragment;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Reward_Screen.RewardFragment;
 import trackmyspend.budgetplanner.expensemanager.Util.CurrencyFormatterUtil;
 
 import com.google.firebase.firestore.FieldValue;
@@ -53,15 +53,15 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout navHome, navAnalysis, navAccount, navReminder, navBackup;
-    ImageView iconHome, iconAnalysis, iconAccount, iconReminder, iconBackup;
-    TextView titleHome, titleAnalysis, titleAccount, titleReminder, titleBackup;
+    LinearLayout navHome, navAnalysis, navAccount, navReminder, navReward;
+    ImageView iconHome, iconAnalysis, iconAccount, iconReminder, iconReward;
+    TextView titleHome, titleAnalysis, titleAccount, titleReminder, titleReward;
     private static final int NOTIFICATION_PERMISSION_CODE = 101;
 
     private long backPressedTime = 0;
 
     // Fragments
-    Fragment homeFragment, analysisFragment, accountFragment, reminderFragment, backupFragment;
+    Fragment homeFragment, analysisFragment, accountFragment, reminderFragment, rewardFragment;
     Fragment activeFragment;
 
     private static final String TAG = "MainActivity";
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseDebugger.logDatabase(db);
         CurrencyFormatterUtil.init(getApplicationContext());
 
-
 //        setupRecurringWorker();
         WorkManager.getInstance(this).enqueue(
                 new OneTimeWorkRequest.Builder(RecurringSchedulerWorker.class).build()
@@ -89,19 +88,19 @@ public class MainActivity extends AppCompatActivity {
         navAnalysis = findViewById(R.id.nav_analysis);
         navAccount = findViewById(R.id.nav_account);
         navReminder = findViewById(R.id.nav_reminder);
-        navBackup = findViewById(R.id.nav_backup); // ✅ NEW
+        navReward = findViewById(R.id.nav_reward); // ✅ NEW
 
         iconHome = findViewById(R.id.icon_home);
         iconAnalysis = findViewById(R.id.icon_analysis);
         iconAccount = findViewById(R.id.icon_account);
         iconReminder = findViewById(R.id.icon_reminder);
-        iconBackup = findViewById(R.id.icon_backup); // ✅ NEW
+        iconReward = findViewById(R.id.icon_reward); // ✅ NEW
 
         titleHome = findViewById(R.id.title_home);
         titleAnalysis = findViewById(R.id.title_analysis);
         titleAccount = findViewById(R.id.title_account);
         titleReminder = findViewById(R.id.title_reminder);
-        titleBackup = findViewById(R.id.title_backup); // ✅ NEW
+        titleReward = findViewById(R.id.title_reward); // ✅ NEW
 
         findViewById(R.id.fab_add_transaction).setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, AddTransactionActivity.class));
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         analysisFragment = new AnalysisFragment();
         accountFragment = new AccountFragment();
         reminderFragment = new ReminderFragment();
-        backupFragment = new Backup_Fragment(); // ✅ NEW
+        rewardFragment = new RewardFragment(); // ✅ NEW
         activeFragment = homeFragment;
 
         // Add all fragments once
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.add(R.id.container, analysisFragment, "ANALYSIS").hide(analysisFragment);
         transaction.add(R.id.container, accountFragment, "ACCOUNT").hide(accountFragment);
         transaction.add(R.id.container, reminderFragment, "REMINDER").hide(reminderFragment);
-        transaction.add(R.id.container, backupFragment, "BACKUP").hide(backupFragment); // ✅ NEW
+        transaction.add(R.id.container, rewardFragment, "BACKUP").hide(rewardFragment); // ✅ NEW
         transaction.commit();
 
         // Set default active
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         navAnalysis.setOnClickListener(v -> showFragment(analysisFragment, navAnalysis, iconAnalysis, titleAnalysis));
         navAccount.setOnClickListener(v -> showFragment(accountFragment, navAccount, iconAccount, titleAccount));
         navReminder.setOnClickListener(v -> showFragment(reminderFragment, navReminder, iconReminder, titleReminder));
-        navBackup.setOnClickListener(v -> showFragment(backupFragment, navBackup, iconBackup, titleBackup)); // ✅ NEW
+        navReward.setOnClickListener(v -> showFragment(rewardFragment, navReward, iconReward, titleReward)); // ✅ NEW
 
         // ✅ Upload user info to Firestore once app is fully opened
         uploadUserToFirestore(db);
@@ -161,12 +160,12 @@ public class MainActivity extends AppCompatActivity {
         iconAnalysis.setColorFilter(defaultColor);
         iconAccount.setColorFilter(defaultColor);
         iconReminder.setColorFilter(defaultColor);
-        iconBackup.setColorFilter(defaultColor);
+        iconReward.setColorFilter(defaultColor);
         titleHome.setTextColor(defaultColor);
         titleAnalysis.setTextColor(defaultColor);
         titleAccount.setTextColor(defaultColor);
         titleReminder.setTextColor(defaultColor);
-        titleBackup.setTextColor(defaultColor);
+        titleReward.setTextColor(defaultColor);
     }
 
     private void animateBounce(LinearLayout view) {

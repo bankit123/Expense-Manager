@@ -2,18 +2,11 @@ package trackmyspend.budgetplanner.expensemanager.Ads;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -22,6 +15,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
@@ -40,12 +34,10 @@ import java.util.Map;
 import trackmyspend.budgetplanner.expensemanager.R;
 
 /**
- * 🚀 SmartAdsManager — Dynamic AdMob via Firebase + Safe Fallback
- * • Fetches ad unit IDs dynamically from Firebase
- * • Initializes AdMob SDK with Firebase appID
- * • Preloads Interstitial & Rewarded automatically
- * • Hides banner/native layouts until ready
- * • Includes callback + timeout + test fallback (no crashes)
+ * AdsManager — AppOpen-ready version
+ * - reads new Firebase nested structure (test_ads/ads_id and /ads_controller)
+ * - normalizes app_open -> appOpen
+ * - preloads AppOpen and exposes showAppOpen(activity, onComplete)
  */
 public class AdsManager {
 
@@ -54,25 +46,35 @@ public class AdsManager {
     private static boolean isInitialized = false;
     private static final Map<String, String> adUnits = new HashMap<>();
 
-    // Fallback Test Ad IDs (Google Official Test IDs)
+    // Fallback Test Ad IDs (Google Official Test IDs). appOpen set to your provided test id.
     private static final Map<String, String> TEST_ADS = Map.of(
-            "appID", "ca-app-pub-3940256099942544~33475117131",
+            "appID", "ca-app-pub-3940256099942544~3347511713",
             "banner", "ca-app-pub-3940256099942544/92145897411",
-            "inter", "ca-app-pub-3940256099942544/103317371221",
-            "reward", "ca-app-pub-3940256099942544/522435491721",
-            "native", "ca-app-pub-3940256099942544/224769611021"
+            "inter", "ca-app-pub-3940256099942544/1033173712",
+            "reward", "ca-app-pub-3940256099942544/5224354917",
+            "native", "ca-app-pub-3940256099942544/2247696110",
+            "appOpen", "ca-app-pub-3940256099942544/9257395921"
     );
 
     private static InterstitialAd interstitialAd;
     private static RewardedAd rewardedAd;
     private static NativeAd nativeAdInstance;
 
+    // --- App Open ad fields ---
+//    private static AppOpenAd appOpenAd;
+//    private static long appOpenLoadTime = 0L;
+//    private static boolean isShowingAppOpen = false;
+    // refresh threshold (4 hours recommended by Google)
+//    private static final long APP_OPEN_EXPIRY_MILLIS = 4 * 60 * 60 * 1000L;
+
     // Interface for splash callback
     public interface InitCallback {
         void onInitialized();
     }
 
-    // 🔹 Initialize Ads (with callback)
+    // ----------------------------
+    // Initialization
+    // ----------------------------
     public static void initialize(Context context, InitCallback callback) {
         if (isInitialized) {
             Log.d(TAG, "ℹ️ AdsManager already initialized");
@@ -84,7 +86,7 @@ public class AdsManager {
         isInitialized = true;
 
         // Safety timeout — fallback to test ads if Firebase is too slow
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
             if (adUnits.isEmpty()) {
                 Log.w(TAG, "⚠️ Firebase took too long — using default test ads");
                 adUnits.putAll(TEST_ADS);
@@ -96,24 +98,72 @@ public class AdsManager {
         fetchAdIdsFromFirebase(context, callback);
     }
 
-    // 🔹 Fetch AdMob IDs from Firebase
+    // Fetch AdMob IDs from Firebase (new nested structure only)
     private static void fetchAdIdsFromFirebase(Context context, InitCallback callback) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("ads");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test_ads");
 
         ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 adUnits.clear();
-                for (DataSnapshot snapshot : task.getResult().getChildren()) {
-                    adUnits.put(snapshot.getKey(), snapshot.getValue(String.class));
+                DataSnapshot root = task.getResult();
+
+                // Expecting new nested structure: test_ads -> ads_id and ads_controller
+                DataSnapshot adsIdSnap = root.child("ads_id");
+                DataSnapshot adsCtrlSnap = root.child("ads_controller");
+
+                if (adsIdSnap.exists() || adsCtrlSnap.exists()) {
+
+                    // Read ads_id children (appID, banner, inter, reward, native, app_open, ...)
+                    if (adsIdSnap.exists()) {
+                        for (DataSnapshot child : adsIdSnap.getChildren()) {
+                            String key = child.getKey();
+                            Object val = child.getValue();
+                            if (key != null && val != null) {
+                                // normalize snake_case app_open -> appOpen
+
+                                    adUnits.put(key, String.valueOf(val));
+
+                            }
+                        }
+                        Log.d(TAG, "DEBUG: ads_id.appOpen -> " + adUnits.get("appOpen"));
+                    }
+
+                    // Read ads_controller children and map known controller keys to internal keys used by getters
+                    if (adsCtrlSnap.exists()) {
+                        Object accCntVal = adsCtrlSnap.child("b_acc_details_ads_cnt").getValue();
+                        if (accCntVal != null) {
+                            adUnits.put("acc_details_banner_cnt", String.valueOf(accCntVal));
+                        }
+
+                        Object transCntVal = adsCtrlSnap.child("b_home_trans_ads_cnt").getValue();
+                        if (transCntVal != null) {
+                            adUnits.put("trans_cnt", String.valueOf(transCntVal));
+                        }
+
+                        // Also store any other controller keys under their original names (stringified)
+                        for (DataSnapshot child : adsCtrlSnap.getChildren()) {
+                            String key = child.getKey();
+                            Object val = child.getValue();
+                            if (key != null && val != null) {
+                                if ("b_acc_details_ads_cnt".equals(key) || "b_home_trans_ads_cnt".equals(key)) continue;
+                                adUnits.put(key, String.valueOf(val));
+                            }
+                        }
+                    }
+                } else {
+                    // NEW STRUCTURE MISSING — fallback to TEST_ADS
+                    Log.e(TAG, "❌ Expected new nested structure (ads_id / ads_controller) not present in Firebase.");
+                    adUnits.putAll(TEST_ADS);
                 }
 
-                Log.d(TAG, "✅ Firebase ad config loaded: " + adUnits);
+                Log.d(TAG, "✅ Firebase ad config loaded (new structure only): " + adUnits);
 
+                // Try to find appId from ads_id.appID
                 String appId = adUnits.get("appID");
                 if (appId != null && !appId.trim().isEmpty()) {
                     initAdMob(context, appId);
                 } else {
-                    Log.w(TAG, "⚠️ Missing 'appID' in Firebase — using test ads");
+                    Log.w(TAG, "⚠️ Missing 'appID' in new structure — using test ads");
                     adUnits.putAll(TEST_ADS);
                     initAdMob(context, TEST_ADS.get("appID"));
                 }
@@ -127,7 +177,6 @@ public class AdsManager {
         });
     }
 
-    // 🔹 Initialize AdMob SDK
     private static void initAdMob(Context context, String appId) {
         try {
             Log.d(TAG, "🧩 Initializing AdMob with App ID: " + appId);
@@ -136,6 +185,8 @@ public class AdsManager {
                 logInitializationStatus(initializationStatus);
                 preloadInterstitial(context);
                 preloadRewarded(context);
+                // preload app open too
+//                preloadAppOpen(context);
             });
         } catch (Exception e) {
             Log.e(TAG, "❌ AdMob initialization failed: " + e.getMessage());
@@ -152,54 +203,47 @@ public class AdsManager {
     }
 
     // ----------------------------
-    // 🟦 Banner Ads
+    // Banner / Interstitial / Rewarded (kept similar)
     // ----------------------------
-    public static void loadBanner(Activity activity, FrameLayout container) {
+
+    public static void loadBanner(Activity activity, android.widget.FrameLayout container) {
         String adUnit = adUnits.get("banner");
-        //Toast.makeText(activity, adUnit, Toast.LENGTH_SHORT).show();
         if (adUnit == null || adUnit.isEmpty()) {
             Log.w(TAG, "⚠️ Banner adUnit missing");
-            container.setVisibility(View.GONE);
+            container.setVisibility(android.view.View.GONE);
             return;
         }
 
         AdView adView = new AdView(activity);
         adView.setAdSize(AdSize.BANNER);
         adView.setAdUnitId(adUnit);
-//        Toast.makeText(activity, String.valueOf(adUnit), Toast.LENGTH_SHORT).show();
-
 
         container.removeAllViews();
         container.addView(adView);
-        container.setVisibility(View.GONE);
+        container.setVisibility(android.view.View.GONE);
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                container.setVisibility(View.VISIBLE);
+                container.setVisibility(android.view.View.VISIBLE);
                 Log.d(TAG, "✅ Banner Ad Loaded");
-
-//                  Toast.makeText(activity, "ad loaded", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                container.setVisibility(View.GONE);
+                container.setVisibility(android.view.View.GONE);
                 Log.e(TAG, "❌ Banner failed: " + adError.getMessage());
-                //Toast.makeText(activity, "ad not loaded", Toast.LENGTH_SHORT).show();
-
             }
         });
 
         adView.loadAd(adRequest);
     }
 
-    public static void loadBanner(Activity activity, FrameLayout container, BannerVisible callback) {
-
+    public static void loadBanner(Activity activity, android.widget.FrameLayout container, BannerVisible callback) {
         String adUnit = adUnits.get("banner");
         if (adUnit == null || adUnit.isEmpty()) {
-            container.setVisibility(View.GONE);
+            container.setVisibility(android.view.View.GONE);
             return;
         }
 
@@ -209,23 +253,21 @@ public class AdsManager {
 
         container.removeAllViews();
         container.addView(adView);
-        container.setVisibility(View.GONE);
+        container.setVisibility(android.view.View.GONE);
 
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                container.setVisibility(View.VISIBLE);
-
-                // ✅ Wait until layout is drawn so we get real height
+                container.setVisibility(android.view.View.VISIBLE);
                 container.post(() -> {
-                    int heightPx = container.getHeight();  // REAL height
+                    int heightPx = container.getHeight();
                     if (callback != null) callback.onBannerVisible(heightPx);
                 });
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                container.setVisibility(View.GONE);
+                container.setVisibility(android.view.View.GONE);
             }
         });
 
@@ -236,11 +278,6 @@ public class AdsManager {
         void onBannerVisible(int bannerHeightPx);
     }
 
-
-
-    // ----------------------------
-    // 🟥 Interstitial Ads
-    // ----------------------------
     private static void preloadInterstitial(Context context) {
         String adUnit = adUnits.get("inter");
         if (adUnit == null || adUnit.isEmpty()) {
@@ -280,9 +317,6 @@ public class AdsManager {
         }
     }
 
-    // ----------------------------
-    // 🟩 Rewarded Ads
-    // ----------------------------
     private static void preloadRewarded(Context context) {
         String adUnit = adUnits.get("reward");
         if (adUnit == null || adUnit.isEmpty()) {
@@ -325,49 +359,10 @@ public class AdsManager {
         }
     }
 
-    // ----------------------------
-    // 🟨 Native Ads
-    // ----------------------------
-//    public static void loadNativeAd(Context context, FrameLayout container) {
-//        String adUnit = adUnits.get("native");
-//        if (adUnit == null || adUnit.isEmpty()) {
-//            Log.w(TAG, "⚠️ Native adUnit missing");
-//            container.setVisibility(View.GONE);
-//            return;
-//        }
-//
-//        container.setVisibility(View.GONE);
-//
-//        AdLoader adLoader = new AdLoader.Builder(context, adUnit)
-//                .forNativeAd(nativeAd -> {
-//                    nativeAdInstance = nativeAd;
-//                    Log.d(TAG, "✅ Native Ad Loaded");
-//
-//                    if (container != null) {
-//                        LayoutInflater inflater = LayoutInflater.from(context);
-//                        NativeAdView adView = (NativeAdView)
-//                        populateNativeAdView(nativeAd, adView);
-//                        container.removeAllViews();
-//                        container.addView(adView);
-//                        container.setVisibility(View.VISIBLE);
-//                    }
-//                })
-//                .withAdListener(new AdListener() {
-//                    @Override
-//                    public void onAdFailedToLoad(@NonNull LoadAdError error) {
-//                        container.setVisibility(View.GONE);
-//                        Log.e(TAG, "❌ Native Ad Failed: " + error.getMessage());
-//                    }
-//                })
-//                .build();
-//
-//        adLoader.loadAd(new AdRequest.Builder().build());
-//    }
-
     private static void populateNativeAdView(NativeAd nativeAd, NativeAdView adView) {
-        ((TextView) adView.findViewById(R.id.ad_headline)).setText(nativeAd.getHeadline());
-        ((TextView) adView.findViewById(R.id.ad_body)).setText(nativeAd.getBody());
-        ((Button) adView.findViewById(R.id.ad_call_to_action)).setText(nativeAd.getCallToAction());
+        ((android.widget.TextView) adView.findViewById(R.id.ad_headline)).setText(nativeAd.getHeadline());
+        ((android.widget.TextView) adView.findViewById(R.id.ad_body)).setText(nativeAd.getBody());
+        ((android.widget.Button) adView.findViewById(R.id.ad_call_to_action)).setText(nativeAd.getCallToAction());
 
         ImageView icon = adView.findViewById(R.id.ad_app_icon);
         if (nativeAd.getIcon() != null)
@@ -377,23 +372,121 @@ public class AdsManager {
     }
 
     // ----------------------------
-    // 🎁 Reward Callback Interface
+    // App Open Ads
+    // ----------------------------
+//    public static void preloadAppOpen(Context context) {
+//        String adUnit = adUnits.get("appOpen");
+//        if (adUnit == null || adUnit.isEmpty()) {
+//            Log.w(TAG, "⚠️ App Open adUnit missing - using test fallback");
+//            adUnit = TEST_ADS.get("appOpen");
+//        }
+//
+//        AdRequest request = new AdRequest.Builder().build();
+//
+//        AppOpenAd.load(context, adUnit, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
+//                new AppOpenAd.AppOpenAdLoadCallback() {
+//                    @Override
+//                    public void onAdLoaded(@NonNull AppOpenAd ad) {
+//                        appOpenAd = ad;
+//                        appOpenLoadTime = System.currentTimeMillis();
+//                        Log.d(TAG, "✅ App Open ad loaded — time=" + appOpenLoadTime + " id=" + adUnits.get("appOpen"));
+//                    }
+//
+//                    @Override
+//                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+//                        appOpenAd = null;
+//                        appOpenLoadTime = 0;
+//                        Log.e(TAG, "❌ App Open ad failed to load for id=" + adUnits.get("appOpen") + " : " + loadAdError.getMessage());
+//                    }
+//                });
+//    }
+
+//    private static boolean isAppOpenAdAvailable() {
+//        return appOpenAd != null && (System.currentTimeMillis() - appOpenLoadTime) < APP_OPEN_EXPIRY_MILLIS;
+//    }
+
+    /**
+     * Show App Open and run onComplete after ad dismissed or immediately if no ad available.
+     */
+//    public static void showAppOpen(Activity activity, @Nullable Runnable onComplete) {
+//        if (isShowingAppOpen) {
+//            Log.d(TAG, "ℹ️ App Open already showing");
+//            if (onComplete != null) onComplete.run();
+//            return;
+//        }
+//
+//        Log.d(TAG, "DEBUG showAppOpen(): isAvailable=" + isAppOpenAdAvailable() + " appOpenId=" + adUnits.get("appOpen"));
+//
+//        if (isAppOpenAdAvailable()) {
+//            isShowingAppOpen = true;
+//            appOpenAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+//                @Override
+//                public void onAdDismissedFullScreenContent() {
+//                    Log.d(TAG, "ℹ️ App Open dismissed — clearing and preloading new one");
+//                    appOpenAd = null;
+//                    isShowingAppOpen = false;
+//                    preloadAppOpen(activity);
+//                    if (onComplete != null) {
+//                        try { onComplete.run(); } catch (Exception e) { Log.e(TAG, "onComplete threw: " + e.getMessage()); }
+//                    }
+//                }
+//
+//                @Override
+//                public void onAdFailedToShowFullScreenContent(@NonNull com.google.android.gms.ads.AdError adError) {
+//                    Log.e(TAG, "❌ App Open failed to show: " + adError.getMessage());
+//                    appOpenAd = null;
+//                    isShowingAppOpen = false;
+//                    preloadAppOpen(activity);
+//                    if (onComplete != null) {
+//                        try { onComplete.run(); } catch (Exception e) { Log.e(TAG, "onComplete threw: " + e.getMessage()); }
+//                    }
+//                }
+//
+//                @Override
+//                public void onAdShowedFullScreenContent() {
+//                    Log.d(TAG, "✅ App Open shown");
+//                }
+//            });
+//
+//            try {
+//                appOpenAd.show(activity);
+//            } catch (Exception e) {
+//                Log.e(TAG, "❌ Exception while showing App Open: " + e.getMessage());
+//                isShowingAppOpen = false;
+//                appOpenAd = null;
+//                preloadAppOpen(activity);
+//                if (onComplete != null) onComplete.run();
+//            }
+//        } else {
+//            Log.w(TAG, "⚠️ No App Open available — preloading now and continuing");
+//            preloadAppOpen(activity);
+//            if (onComplete != null) onComplete.run();
+//        }
+//    }
+
+    // Backwards-compatible simple call
+//    public static void showAppOpen(Activity activity) {
+//        showAppOpen(activity, null);
+//    }
+
+    // Helper: query readiness
+//    public static boolean isAppOpenReady() {
+//        return isAppOpenAdAvailable();
+//    }
+
+    // ----------------------------
+    // Reward callback interface
     // ----------------------------
     public interface RewardCallback {
         void onRewardEarned(RewardItem reward);
     }
 
-    /**
-     * -----------------------------------------------------------
-     * ✅ Get Extra Firebase Config Values (non-ad keys)
-     * -----------------------------------------------------------
-     * Returns a value for any custom key received from Firebase.
-     * Example usage: AdsManager.getConfigValue("trans_cnt")
-     */
-
+    // ----------------------------
+    // Extra getters for ad frequency from adUnits
+    // ----------------------------
     public static int getTransactionAdFrequency() {
         try {
-            String count = adUnits.get("trans_cnt");
+            String count = adUnits.get("trans_cnt"); // mapped from b_home_trans_ads_cnt
             if (count == null) return 0;
             return Integer.parseInt(count.trim());
         } catch (Exception e) {
@@ -403,13 +496,11 @@ public class AdsManager {
 
     public static int getAccDetailsBannerAdFrequency() {
         try {
-            String count = adUnits.get("acc_details_banner_cnt");
+            String count = adUnits.get("acc_details_banner_cnt"); // mapped from b_acc_details_ads_cnt
             if (count == null) return 0;
             return Integer.parseInt(count.trim());
         } catch (Exception e) {
             return 0;
         }
     }
-
-
 }

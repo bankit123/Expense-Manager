@@ -341,14 +341,13 @@ public class Account_Details_Activity extends AppCompatActivity {
 
         List<Object> groupedItems = new ArrayList<>();
 
-        int headerCounter = 0; // ✅ count only headers
+        int txnCounter = 0;  // ✅ Count transactions instead of headers
 
         for (Map.Entry<String, List<Transaction>> entry : groupedMap.entrySet()) {
 
             List<Transaction> dailyList = entry.getValue();
             double incomeTotal = 0, expenseTotal = 0;
 
-            // ✅ calculate totals
             for (Transaction t : dailyList) {
                 if ("Income".equalsIgnoreCase(t.type)) {
                     incomeTotal += t.amount;
@@ -361,12 +360,9 @@ public class Account_Details_Activity extends AppCompatActivity {
                 }
             }
 
-            // ✅ BEFORE ADDING THIS HEADER → insert ad if required
-            if (adFrequency > 0 && headerCounter > 0 && headerCounter % adFrequency == 0) {
-                groupedItems.add("AD_PLACEHOLDER");
-            }
+            // ✅ REMOVE old headerCounter logic
+            // ❌ DO NOT insert ad before header now
 
-            // ✅ insert header AFTER ad
             DateHeader header;
             try {
                 header = new DateHeader(dateOnlyFormat.parse(entry.getKey()), incomeTotal, expenseTotal);
@@ -375,14 +371,82 @@ public class Account_Details_Activity extends AppCompatActivity {
             }
 
             groupedItems.add(header);
-            headerCounter++;
 
-            // ✅ add transactions normally (NO ADS HERE)
-            groupedItems.addAll(dailyList);
+            // ✅ Add transactions one by one and insert ADS after every adFrequency transactions
+            for (Transaction t : dailyList) {
+                groupedItems.add(t);
+                txnCounter++;
+
+                if (adFrequency > 0 && txnCounter % adFrequency == 0) {
+                    groupedItems.add("AD_PLACEHOLDER");
+                }
+            }
         }
 
         return groupedItems;
     }
+
+
+//    private List<Object> groupTransactionsByDate(List<Transaction> transactions) {
+//
+//        int adFrequency = 0;
+//        try {
+//            adFrequency = AdsManager.getAccDetailsBannerAdFrequency();
+//        } catch (Exception ignored) {
+//            adFrequency = 0;
+//        }
+//
+//        Map<String, List<Transaction>> groupedMap = new LinkedHashMap<>();
+//
+//        for (Transaction t : transactions) {
+//            String dateKey = dateOnlyFormat.format(t.date);
+//            groupedMap.computeIfAbsent(dateKey, k -> new ArrayList<>()).add(t);
+//        }
+//
+//        List<Object> groupedItems = new ArrayList<>();
+//
+//        int headerCounter = 0; // ✅ count only headers
+//
+//        for (Map.Entry<String, List<Transaction>> entry : groupedMap.entrySet()) {
+//
+//            List<Transaction> dailyList = entry.getValue();
+//            double incomeTotal = 0, expenseTotal = 0;
+//
+//            // ✅ calculate totals
+//            for (Transaction t : dailyList) {
+//                if ("Income".equalsIgnoreCase(t.type)) {
+//                    incomeTotal += t.amount;
+//                } else if ("Expense".equalsIgnoreCase(t.type)) {
+//                    expenseTotal += t.amount;
+//                } else if ("TransferCredit".equalsIgnoreCase(t.type)) {
+//                    incomeTotal += t.amount;
+//                } else if ("TransferDebit".equalsIgnoreCase(t.type)) {
+//                    expenseTotal += t.amount;
+//                }
+//            }
+//
+//            // ✅ BEFORE ADDING THIS HEADER → insert ad if required
+//            if (adFrequency > 0 && headerCounter > 0 && headerCounter % adFrequency == 0) {
+//                groupedItems.add("AD_PLACEHOLDER");
+//            }
+//
+//            // ✅ insert header AFTER ad
+//            DateHeader header;
+//            try {
+//                header = new DateHeader(dateOnlyFormat.parse(entry.getKey()), incomeTotal, expenseTotal);
+//            } catch (Exception e) {
+//                header = new DateHeader(new Date(), incomeTotal, expenseTotal);
+//            }
+//
+//            groupedItems.add(header);
+//            headerCounter++;
+//
+//            // ✅ add transactions normally (NO ADS HERE)
+//            groupedItems.addAll(dailyList);
+//        }
+//
+//        return groupedItems;
+//    }
 
 
 

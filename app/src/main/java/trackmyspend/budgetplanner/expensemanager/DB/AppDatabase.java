@@ -48,7 +48,7 @@ import java.util.concurrent.Executors;
         Reminder.class,
         RecurringTransaction.class,
         RecurringTransactionSchedule.class
-}, version = 2, exportSchema = false)
+}, version = 3, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
@@ -137,6 +137,7 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase db) {
             // Add schema changes for version 3 here
+            db.execSQL("ALTER TABLE users ADD COLUMN remaining_transaction_cnt INTEGER NOT NULL DEFAULT 0");
         }
     };
 

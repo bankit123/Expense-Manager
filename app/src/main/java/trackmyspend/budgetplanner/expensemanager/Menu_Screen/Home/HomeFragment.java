@@ -240,24 +240,23 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-
-
     private List<Object> prepareGroupedItems(List<Transaction> transactions) {
         List<Object> items = new ArrayList<>();
         Map<String, List<Transaction>> grouped = new LinkedHashMap<>();
         SimpleDateFormat keyFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 
         int adFrequency = AdsManager.getTransactionAdFrequency();
-        int headerCounter = 0;
+        int txnCounter = 0; // counts transactions added to items
 
+        // group by day (keeps insertion order)
         for (Transaction txn : transactions) {
             String key = keyFormat.format(txn.date);
             if (!grouped.containsKey(key)) grouped.put(key, new ArrayList<>());
             grouped.get(key).add(txn);
         }
 
+        // build items: header then its transactions; insert ad after every adFrequency transactions
         for (List<Transaction> dayTxns : grouped.values()) {
-
             DateHeader header = new DateHeader(dayTxns.get(0).date, 0, 0);
 
             for (Transaction t : dayTxns) {
@@ -269,16 +268,59 @@ public class HomeFragment extends Fragment {
             }
 
             items.add(header);
-            items.addAll(dayTxns);
 
-            headerCounter++;
+            for (Transaction t : dayTxns) {
+                items.add(t);
+                txnCounter++;
 
-            // ✅ Insert ad after every X headers
-            if (adFrequency > 0 && headerCounter % adFrequency == 0) {
-                items.add("AD_PLACEHOLDER");
+                if (adFrequency > 0 && txnCounter % adFrequency == 0) {
+                    items.add("AD_PLACEHOLDER");
+                }
             }
         }
+
         return items;
     }
+
+
+
+//    private List<Object> prepareGroupedItems(List<Transaction> transactions) {
+//        List<Object> items = new ArrayList<>();
+//        Map<String, List<Transaction>> grouped = new LinkedHashMap<>();
+//        SimpleDateFormat keyFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+//
+//        int adFrequency = AdsManager.getTransactionAdFrequency();
+//        int headerCounter = 0;
+//
+//        for (Transaction txn : transactions) {
+//            String key = keyFormat.format(txn.date);
+//            if (!grouped.containsKey(key)) grouped.put(key, new ArrayList<>());
+//            grouped.get(key).add(txn);
+//        }
+//
+//        for (List<Transaction> dayTxns : grouped.values()) {
+//
+//            DateHeader header = new DateHeader(dayTxns.get(0).date, 0, 0);
+//
+//            for (Transaction t : dayTxns) {
+//                if ("Income".equalsIgnoreCase(t.type)) {
+//                    header.incomeTotal += t.amount;
+//                } else if ("Expense".equalsIgnoreCase(t.type)) {
+//                    header.expenseTotal += t.amount;
+//                }
+//            }
+//
+//            items.add(header);
+//            items.addAll(dayTxns);
+//
+//            headerCounter++;
+//
+//            // ✅ Insert ad after every X headers
+//            if (adFrequency > 0 && headerCounter % adFrequency == 0) {
+//                items.add("AD_PLACEHOLDER");
+//            }
+//        }
+//        return items;
+//    }
 
 }

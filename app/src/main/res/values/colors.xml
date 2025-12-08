@@ -58,6 +58,9 @@
     <color name="account_card_border">#1F2937</color>
     <color name="subtype_bg">#1C2533</color>
 
+<!--    reward-->
+    <color name="reward_card_bg">#FFFFFF</color>
+"
 
     <color name="red_recurring_payment">#EF788A</color>
     <color name="green_500">#9ED99E</color>
