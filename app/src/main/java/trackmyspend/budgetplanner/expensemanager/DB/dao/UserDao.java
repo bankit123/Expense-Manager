@@ -35,4 +35,7 @@ public interface UserDao {
     @Query("SELECT mode FROM users WHERE user_id = :userId LIMIT 1")
     String getUserMode(long userId);
 
+    @Query("UPDATE users SET remaining_transaction_cnt = remaining_transaction_cnt + :addValue WHERE user_id = :userId")
+    void addRemainingTransactions(long userId, int addValue);
+
 }

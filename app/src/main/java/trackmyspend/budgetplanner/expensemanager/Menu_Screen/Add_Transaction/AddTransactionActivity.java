@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -19,11 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.dao.SubtypeDao;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Subtype;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
+import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Account_Subtype.SubtypePickerUtil;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Category.Adapter.CategoryAdapter;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Category.CategoryUtil;
@@ -46,6 +49,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             tvAmountTitle, tvSubtype, tvSubtypeTo;
     private TextView currencySymbol;
     private String currentType = "Expense"; // default
+    TextView remainingTrans;
 
     private EditText etPayee, etAmount, etNotes;
     private ImageView ivCalendar, ivCategoryIconTransaction, ivSubtypeIcon, ivSubtypeIconTo;
@@ -78,6 +82,9 @@ public class AddTransactionActivity extends AppCompatActivity {
         db = AppDatabase.getDatabase(this);
 
         // Init UI
+        remainingTrans = findViewById(R.id.remainingTrans);
+        refreshRemainingTrans();
+
         layoutCategory = findViewById(R.id.layoutCategory);
         tvCategory = findViewById(R.id.tvCategory);
         ivCategoryIconTransaction = findViewById(R.id.ivCategoryIconTransaction);
@@ -109,7 +116,9 @@ public class AddTransactionActivity extends AppCompatActivity {
 //        btnDelete = findViewById(R.id.btnDelete);
 
         ImageView ivBack = findViewById(R.id.ivBack);
-        ImageView ivClose = findViewById(R.id.ivClose);
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        AdsManager.loadBanner(this, bannerContainer);
 
         currencySymbol.setText(CurrencyFormatterUtil.getCurrencySymbol());
 
@@ -187,7 +196,6 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         ivBack.setOnClickListener(v -> onBackPressed());
 
-
         // Default → Spend
         setFilterSelected(tvSpend);
         isExpense = true;
@@ -246,6 +254,19 @@ public class AddTransactionActivity extends AppCompatActivity {
             loadTransaction(transactionId);
             tvTransfer.setVisibility(View.GONE);
         }
+    }
+
+    private void refreshRemainingTrans() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                User user = db.userDao().getFirstUser();
+                final int pts = (user != null) ? user.remaining_transaction_cnt : 0;
+                runOnUiThread(() -> remainingTrans.setText(pts + " pts"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> remainingTrans.setText("0 pts"));
+            }
+        });
     }
 
     private void resetFlowFlags() {

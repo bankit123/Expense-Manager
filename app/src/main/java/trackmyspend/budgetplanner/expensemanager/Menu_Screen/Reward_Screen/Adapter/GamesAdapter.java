@@ -3,7 +3,6 @@ package trackmyspend.budgetplanner.expensemanager.Menu_Screen.Reward_Screen.Adap
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.VH> {
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_reward_card, parent, false);
+                .inflate(R.layout.item_game, parent, false); // NEW GAME UI
         return new VH(v);
     }
 
@@ -44,16 +43,18 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.VH> {
 
         holder.title.setText(g.name);
         holder.points.setText(g.pointsEarned + " pts");
-        holder.action.setText(g.buttonText);
 
-        // Load icon using Picasso/Glide
-        Picasso.get().load(g.icon).placeholder(R.drawable.logo).into(holder.icon);
+        // Load game image
+        Picasso.get()
+                .load(g.icon)
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.logo)
+                .into(holder.icon);
 
-        holder.action.setOnClickListener(v -> {
+        // Click whole card
+        holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onGameClicked(g);
         });
-
-        holder.divider.setVisibility(position == items.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
     public void updateList(ArrayList<GameModel> list) {
@@ -61,22 +62,20 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.VH> {
         notifyDataSetChanged();
     }
 
-    @Override public int getItemCount() { return items.size(); }
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
 
     static class VH extends RecyclerView.ViewHolder {
         ImageView icon;
         TextView title, points;
-        TextView action;
-        View divider;
 
         VH(@NonNull View itemView) {
             super(itemView);
-            icon = itemView.findViewById(R.id.imgGift);
-            title = itemView.findViewById(R.id.tvRewardTitle);
-            points = itemView.findViewById(R.id.tvRewardPoints);
-            action = itemView.findViewById(R.id.btnClaim);
-            divider = itemView.findViewById(R.id.viewDivider);
+            icon = itemView.findViewById(R.id.imgGame);
+            title = itemView.findViewById(R.id.tvGameName);
+            points = itemView.findViewById(R.id.tvGamePoints);
         }
     }
 }
-

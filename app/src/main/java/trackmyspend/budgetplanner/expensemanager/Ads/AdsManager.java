@@ -300,7 +300,25 @@ public class AdsManager {
                 });
     }
 
+    // inside AdsManager class (add near existing interstitial methods)
+
+    // Callback interface for interstitial dismiss
+    public interface InterstitialCallback {
+        void onAdDismissed();
+    }
+
+    /**
+     * Backwards-compatible simple call (keeps existing behavior)
+     */
     public static void showInterstitial(Activity activity) {
+        showInterstitial(activity, null);
+    }
+
+    /**
+     * New overload: show interstitial and call callback when ad dismissed (or immediately if no ad).
+     * Use this when you need to grant points after the user finishes watching the interstitial.
+     */
+    public static void showInterstitial(Activity activity, @Nullable InterstitialCallback callback) {
         if (interstitialAd != null) {
             interstitialAd.show(activity);
             interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -309,13 +327,31 @@ public class AdsManager {
                     interstitialAd = null;
                     Log.d(TAG, "ℹ️ Interstitial closed — reloading...");
                     preloadInterstitial(activity);
+                    if (callback != null) {
+                        try { callback.onAdDismissed(); } catch (Exception e) { Log.e(TAG, "callback error: " + e.getMessage()); }
+                    }
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull com.google.android.gms.ads.AdError adError) {
+                    Log.e(TAG, "❌ Interstitial failed to show: " + adError.getMessage());
+                    interstitialAd = null;
+                    preloadInterstitial(activity);
+                    if (callback != null) {
+                        try { callback.onAdDismissed(); } catch (Exception e) { Log.e(TAG, "callback error: " + e.getMessage()); }
+                    }
                 }
             });
         } else {
             Log.w(TAG, "⚠️ Interstitial not ready — preloading...");
             preloadInterstitial(activity);
+            // Option: call callback immediately so UI can continue (you decide; here we call back)
+            if (callback != null) {
+                try { callback.onAdDismissed(); } catch (Exception e) { Log.e(TAG, "callback error: " + e.getMessage()); }
+            }
         }
     }
+
 
     private static void preloadRewarded(Context context) {
         String adUnit = adUnits.get("reward");

@@ -20,12 +20,10 @@
             android:padding="16dp">
 
             <!--            Header-->
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:paddingVertical="8dp">
 
                 <!-- Back Button -->
                 <ImageView
@@ -33,30 +31,39 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_back_btn"
-                    app:tint="@color/ic_color" />
+                    app:tint="@color/ic_color"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true" />
 
-                <!-- Title -->
+                <!-- Title (Perfect Center Always) -->
                 <TextView
                     android:id="@+id/tvTitle"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
                     android:text="Add Transaction"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="@color/opposite_color"
                     android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true" />
 
+                <!-- Remaining Transactions -->
+                <TextView
+                    android:id="@+id/remainingTrans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12"
+                    android:textStyle="bold"
+                    android:textColor="@color/opposite_color"
+                    android:background="@drawable/bg_card_account_details"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="5dp"
+                    android:textSize="10sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
 
-                <!-- Close Button -->
-                <ImageView
-                    android:id="@+id/ivClose"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    app:tint="@color/ic_color" />
+            </RelativeLayout>
 
-            </LinearLayout>
 
             <!--            spend income-->
             <LinearLayout
@@ -471,40 +478,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="end"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp">
 
+        <!-- Banner Ad -->
+        <FrameLayout
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="4dp"
+            android:visibility="gone" />
+
+        <!-- Save Button -->
         <LinearLayout
             android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"
             android:background="@drawable/bg_btn_save"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@drawable/ic_save"
                 app:tint="@color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingVertical="12dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="16dp"
+                android:paddingStart="6dp"
                 android:text="Save"
-                android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:visibility="visible" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 </RelativeLayout>

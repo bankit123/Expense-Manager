@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="0dp"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <!-- Game Image -->
+        <ImageView
+            android:id="@+id/imgGame"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_image_bg"
+            android:clipToOutline="true" />
+
+        <!-- Game Name -->
+        <TextView
+            android:id="@+id/tvGameName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Game Name"
+            android:textColor="@color/opposite_color"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:paddingTop="6dp"
+            android:paddingHorizontal="8dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="center" />
+
+        <!-- Points -->
+        <TextView
+            android:id="@+id/tvGamePoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 pts"
+            android:paddingBottom="8dp"
+            android:textColor="@color/opposite_color"
+            android:textSize="12sp"
+            android:paddingTop="4dp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
