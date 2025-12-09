@@ -3,69 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp">
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="8dp">
 
-    <!-- ITEM ROW -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <!-- Gift Icon -->
         <ImageView
             android:id="@+id/imgGift"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:src="@drawable/ic_gift"
-            android:adjustViewBounds="true"
             android:scaleType="centerInside" />
 
-        <!-- Title + Points -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="16dp">
+            android:paddingStart="12dp">
 
             <TextView
                 android:id="@+id/tvRewardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7 days of free Superz"
-                android:textColor="@color/opposite_color"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="Reward title"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/opposite_color" />
 
             <TextView
                 android:id="@+id/tvRewardPoints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100 Points"
-                android:textColor="@color/opposite_color"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textColor="@color/opposite_color" />
         </LinearLayout>
 
-        <!-- Claim Button -->
         <TextView
             android:id="@+id/btnClaim"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:paddingHorizontal="16dp"
+            android:layout_height="30dp"
+            android:paddingHorizontal="12dp"
             android:gravity="center"
+            android:background="@drawable/bg_btn_save"
             android:text="Claim"
             android:textSize="13sp"
-            android:textColor="@color/opposite_color"
-            android:background="@drawable/bg_card_account_details"
-            android:layout_marginStart="8dp" />
+            android:textColor="@color/same_color" />
 
     </LinearLayout>
 
-    <!-- Divider -->
+    <!-- Divider / HR -->
     <View
+        android:id="@+id/viewDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="8dp"
         android:background="@color/setting_boarder" />
-
 </LinearLayout>

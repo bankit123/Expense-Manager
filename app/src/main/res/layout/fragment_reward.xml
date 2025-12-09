@@ -4,208 +4,229 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     tools:context=".Menu_Screen.Reward_Screen.RewardFragment">
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/main_bg">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <!-- Header -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_margin="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Earn Reward"
-                    android:textColor="@color/opposite_color"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+            android:background="@color/main_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card_account_details"
-                android:layout_marginHorizontal="16dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="20dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <!-- Card content: horizontal weighted layout (30% image, 70% text) -->
+                <!-- Header -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_margin="16dp">
 
-                    <!-- Image: 30% -->
-                    <ImageView
-                        android:id="@+id/reward_star"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerInside"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_reward_star" />
-
-                    <!-- Text block: 70% -->
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:paddingStart="12dp">
+                        android:layout_weight="1"
+                        android:text="Earn Reward"
+                        android:textColor="@color/opposite_color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tv_points"
-                            android:layout_width="wrap_content"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_account_details"
+                    android:layout_marginHorizontal="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="20dp">
+
+                    <!-- Card content: horizontal weighted layout (30% image, 70% text) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- Image: 30% -->
+                        <ImageView
+                            android:id="@+id/reward_star"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerInside"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_reward_star" />
+
+                        <!-- Text block: 70% -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="591 pts"
-                            android:textColor="@color/opposite_color"
-                            android:textSize="20sp"
+                            android:layout_weight="7"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingStart="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_points"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="591 pts"
+                                android:textColor="@color/opposite_color"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_subtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                android:text="Total points earned"
+                                android:textColor="@color/opposite_color"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="8dp"
+                        android:background="@color/setting_boarder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Earn points and unlock transactions"
+                        android:textSize="10sp"
+                        android:layout_marginStart="6dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1 point = 1 transaction!"
+                        android:textColor="@color/opposite_color"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginStart="6dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rewards"
+                    android:paddingTop="16dp"
+                    android:paddingHorizontal="18dp"
+                    android:textColor="@color/opposite_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_account_details">
+
+                    <!--        filter-->
+                    <LinearLayout
+                        android:id="@+id/filterSegment"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_segment_container"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <!-- Weekly -->
+                        <TextView
+                            android:id="@+id/tvWeekly"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_segment_unselected"
+                            android:gravity="center"
+                            android:text="Direct Points"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="12dp"
                             android:textStyle="bold" />
 
+                        <!-- Monthly -->
                         <TextView
-                            android:id="@+id/tv_subtitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
-                            android:text="Total points earned"
-                            android:textColor="@color/opposite_color"
-                            android:textSize="12sp" />
-
+                            android:id="@+id/tvMonthly"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_segment_unselected"
+                            android:gravity="center"
+                            android:text="Play Game"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
 
                 </LinearLayout>
 
-
-                <View
+                <!-- Make RecyclerView take remaining space -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rewards_list"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/setting_boarder" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="4dp"
-                    android:text="Earn points and unlock transactions"
-                    android:textSize="10sp"
-                    android:layout_marginStart="6dp"/>
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_card_account_details"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    tools:listitem="@layout/item_reward_card"
+                    tools:itemCount="4" />
+
+                <!-- ProgressBar fixed: add layout_width/height -->
+                <ProgressBar
+                    android:id="@+id/progressLoading"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:visibility="gone"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center" />
 
                 <TextView
+                    android:id="@+id/tvError"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 point = 1 transaction!"
-                    android:textColor="@color/opposite_color"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginStart="6dp"/>
+                    android:text="Failed to load"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:textColor="@color/opposite_color"/>
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Rewards"
-                android:paddingTop="16dp"
-                android:paddingHorizontal="18dp"
-                android:textColor="@color/opposite_color"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card_account_details">
-
-                <!--        filter-->
-                <LinearLayout
-                    android:id="@+id/filterSegment"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/bg_segment_container"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="4dp">
-
-                    <!-- Weekly -->
-                    <TextView
-                        android:id="@+id/tvWeekly"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_segment_unselected"
-                        android:gravity="center"
-                        android:text="Direct Points"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textSize="12dp"
-                        android:textStyle="bold" />
-
-                    <!-- Monthly -->
-                    <TextView
-                        android:id="@+id/tvMonthly"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_segment_unselected"
-                        android:gravity="center"
-                        android:text="Play Game"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textSize="12dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-
-
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rewards_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_reward_card"
-                android:background="@drawable/bg_card_account_details"
-                android:layout_margin="16dp"
-                android:paddingVertical="16dp"
-                android:paddingHorizontal="16dp"
-                tools:itemCount="4"
-                android:clipToPadding="false"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp" />
-
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

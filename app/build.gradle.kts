@@ -75,4 +75,9 @@ dependencies {
     implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
     implementation("com.microsoft.clarity:clarity:3.+")
 
+    implementation ("com.android.volley:volley:1.2.1")
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
+
+
 }
