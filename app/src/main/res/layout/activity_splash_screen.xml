@@ -8,12 +8,12 @@
     android:background="#008CFF"
     tools:context="trackmyspend.budgetplanner.expensemanager.Splash_Screen_Activity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"
-        android:alpha="0.03"/>
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:src="@drawable/background"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:alpha="0.03"/>-->
 
     <!-- Logo or Main Image -->
     <ImageView

@@ -54,6 +54,8 @@ public class RewardFragment extends Fragment {
     private String currentMode = "direct";
     private static final String REQ_TAG = "REWARDS_REQ";
 
+    private static final int REQ_GAME_ACTIVITY = 3001;
+
     public RewardFragment() {}
 
     @Override
@@ -70,7 +72,7 @@ public class RewardFragment extends Fragment {
         db = AppDatabase.getDatabase(requireContext());
         queue = Volley.newRequestQueue(requireContext());
 
-        loadUserOnceAndShowPoints();
+        observeUserPoints();
 
         rewardsAdapter = new RewardsAdapter(new ArrayList<>(), this::onRewardClick);
         gamesAdapter = new GamesAdapter(new ArrayList<>(), this::onGameClick);
@@ -90,13 +92,13 @@ public class RewardFragment extends Fragment {
 
     // ------------------- LOAD USER ONCE -------------------
 
-    private void loadUserOnceAndShowPoints() {
-        new Thread(() -> {
-            currentUser = db.userDao().getFirstUser();
-            requireActivity().runOnUiThread(() ->
-                    tvPoints.setText((currentUser != null ? currentUser.remaining_transaction_cnt : 0) + " pts")
-            );
-        }).start();
+    private void observeUserPoints() {
+        db.userDao().getFirstUserLive().observe(getViewLifecycleOwner(), user -> {
+            // This callback runs on main thread
+            currentUser = user;
+            int pts = (currentUser != null) ? currentUser.remaining_transaction_cnt : 0;
+            tvPoints.setText(pts + " pts");
+        });
     }
 
     // ------------------- FETCH EVERYTHING ONCE -------------------
@@ -215,33 +217,26 @@ public class RewardFragment extends Fragment {
         executeRewardAction(r);
     }
 
+    // called from GamesAdapter click
     private void onGameClick(GameModel g) {
-
-        // open game in custom tab / browser
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(g.url));
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(requireContext(), "Unable to open game", Toast.LENGTH_SHORT).show();
+        if (g == null || g.url == null || g.url.trim().isEmpty()) {
+            Toast.makeText(requireContext(), "Game data invalid", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Give points instantly after opening the game
-        new Thread(() -> {
-            try {
-                db.userDao().addRemainingTransactions(currentUser.user_id, g.pointsEarned);
-                currentUser = db.userDao().getFirstUser();
-
-                requireActivity().runOnUiThread(() -> {
-                    tvPoints.setText(currentUser.remaining_transaction_cnt + " pts");
-                    Toast.makeText(requireContext(),
-                            "🎉 +" + g.pointsEarned + " pts earned!",
-                            Toast.LENGTH_SHORT).show();
-                });
-
-            } catch (Exception ignored) {}
-        }).start();
+        // Launch our Game_Activity (which will open custom tab and return points)
+        try {
+            Intent i = new Intent(requireContext(), Game_Activity.class);
+            i.putExtra("game_url", g.url);
+            // optional: pass expected points from JSON if you want the game activity to consider it
+            i.putExtra("game_points", g.pointsEarned);
+            startActivityForResult(i, REQ_GAME_ACTIVITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(requireContext(), "Unable to open game", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
 
     // ------------------- REFLECTION BASED ACTION CALL -------------------
@@ -283,19 +278,29 @@ public class RewardFragment extends Fragment {
     // ------------------- UPDATE USER POINTS (ONE PLACE ONLY!) -------------------
 
     private void updateUserPoints(int add) {
+
         new Thread(() -> {
             if (currentUser == null) currentUser = db.userDao().getFirstUser();
             if (currentUser == null) return;
 
-            db.userDao().addRemainingTransactions(currentUser.user_id, add);
-            currentUser = db.userDao().getFirstUser();
+            long uid = currentUser.user_id;
 
-            requireActivity().runOnUiThread(() -> {
-                tvPoints.setText(currentUser.remaining_transaction_cnt + " pts");
-                Toast.makeText(requireContext(), "🎉 +" + add + " pts added!", Toast.LENGTH_SHORT).show();
-            });
+            // Update database only (UI updates via LiveData)
+            db.userDao().addRemainingTransactions(uid, add);
+
+            // Local copy update (not strictly required but keeps object accurate)
+            currentUser.remaining_transaction_cnt += add;
+
+            // Optional: small toast feedback on main thread
+            requireActivity().runOnUiThread(() ->
+                    Toast.makeText(requireContext(),
+                            "🎉 +" + add + " pts added!",
+                            Toast.LENGTH_SHORT
+                    ).show()
+            );
         }).start();
     }
+
 
     @Override
     public void onDestroyView() {

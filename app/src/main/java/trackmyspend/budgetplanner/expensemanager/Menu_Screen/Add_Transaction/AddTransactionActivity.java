@@ -69,6 +69,7 @@ public class AddTransactionActivity extends AppCompatActivity {
     private boolean isCategorySheetOpenedOnce = false;
     private boolean isSubtypeSheetOpenedOnce = false;
     private boolean isCategoryOpenedAfterSwitch = false;
+    User user;
 
 
     private ActivityResultLauncher<Intent> addCategoryLauncher;
@@ -80,6 +81,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_transaction);
 
         db = AppDatabase.getDatabase(this);
+        user = db.userDao().getFirstUser();
 
         // Init UI
         remainingTrans = findViewById(R.id.remainingTrans);
@@ -237,15 +239,21 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // Save
         findViewById(R.id.btnSave).setOnClickListener(v -> {
-            if (transactionId == -1) {
-                saveTransaction();
-                ReviewUtils.showInAppReview(this);
+
+            if (user != null && user.remaining_transaction_cnt > 0) {
+                db.userDao().addRemainingTransactions(user.user_id, -1);
+
+                if (transactionId == -1) {
+                    saveTransaction();
+                } else {
+                    updateTransaction();
+                }
 
             } else {
-                updateTransaction();
-                ReviewUtils.showInAppReview(this);
-
+                Toast.makeText(this, "No remaining transactions", Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
         // ✅ Check edit mode
@@ -259,7 +267,6 @@ public class AddTransactionActivity extends AppCompatActivity {
     private void refreshRemainingTrans() {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
-                User user = db.userDao().getFirstUser();
                 final int pts = (user != null) ? user.remaining_transaction_cnt : 0;
                 runOnUiThread(() -> remainingTrans.setText(pts + " pts"));
             } catch (Exception e) {
@@ -351,7 +358,6 @@ public class AddTransactionActivity extends AppCompatActivity {
                 }
         );
     }
-
 
 
     private void setupSubtypePickerTo() {
@@ -480,6 +486,8 @@ public class AddTransactionActivity extends AppCompatActivity {
 
                 runOnUiThread(this::finish);
             });
+
+            ReviewUtils.showInAppReview(this);
 
             return;
         }

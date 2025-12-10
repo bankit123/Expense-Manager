@@ -1,5 +1,6 @@
 package trackmyspend.budgetplanner.expensemanager.DB.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,6 +23,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM users LIMIT 1")
     User getFirstUser();
+
+    @Query("SELECT * FROM users LIMIT 1")
+    LiveData<User> getFirstUserLive();
 
     @Query("SELECT * FROM users WHERE user_id = :id")
     User getUserById(long id);

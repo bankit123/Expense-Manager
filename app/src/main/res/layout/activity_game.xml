@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".Menu_Screen.Reward_Screen.Game_Activity">
+
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:src="@drawable/bg_element"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:alpha="0.1"/>-->
+
+    <!-- Main Dialog Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Points Display -->
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/points_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:fontFamily="@font/bungee_regular"
+            android:textColor="#FFEB3B"
+            android:textSize="150dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-100dp"
+            android:gravity="center"
+            android:text="Congrats!!!"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/subtitle_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Boom! Points added to your score!"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_play_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play Again"
+            android:layout_marginTop="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:paddingHorizontal="20dp"
+            android:background="@drawable/bg_btn_game"/>
+
+    </LinearLayout>
+
+    <!-- Continue Button -->
+    <Button
+        android:id="@+id/btn_continue_exporing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginHorizontal="16sp"
+        android:background="@drawable/bg_btn_save"
+        android:text="Continue Exploring"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAni1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/colorfull_celebration" />
+
+    <!-- Bottom to Top Purple Animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAni2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/bottom_to_top_purple_celebration" />
+
+</RelativeLayout>
