@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modern, informative dialog -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="18dp"
+    card_view:cardElevation="0dp"
+    android:layout_margin="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp"
+        android:background="@android:color/white">
+
+        <!-- Header: icon + title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imgCoin"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_reward_star"
+                android:contentDescription="coin"
+                android:layout_marginEnd="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingHorizontal="22dp"
+                    android:text="You're out of free transactions"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:text="Earn points to add more transactions and claim rewards."
+                    android:textSize="13sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <!-- Small explanation -->
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="22dp"
+            android:text="Tip: Visit Rewards to watch short videos or play games to earn points quickly."
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textColor="@color/gray"
+            android:layout_marginTop="10dp" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="14dp">
+
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textSize="15sp"
+                android:textColor="@color/nav_icon_active"
+                android:background="@drawable/bg_btn_outline"
+                android:padding="10dp"
+                android:layout_marginEnd="2dp"/>
+
+            <TextView
+                android:id="@+id/btnGetPoints"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:gravity="center"
+                android:text="Get Points"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_btn_save"
+                android:padding="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

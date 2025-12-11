@@ -1,9 +1,14 @@
 package trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -27,9 +32,11 @@ import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Subtype;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
+import trackmyspend.budgetplanner.expensemanager.MainActivity;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Account_Subtype.SubtypePickerUtil;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Category.Adapter.CategoryAdapter;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Category.CategoryUtil;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.ShakeUtil;
 import trackmyspend.budgetplanner.expensemanager.R;
 import trackmyspend.budgetplanner.expensemanager.Util.CurrencyFormatterUtil;
 import trackmyspend.budgetplanner.expensemanager.Util.ReviewUtils;
@@ -69,7 +76,6 @@ public class AddTransactionActivity extends AppCompatActivity {
     private boolean isCategorySheetOpenedOnce = false;
     private boolean isSubtypeSheetOpenedOnce = false;
     private boolean isCategoryOpenedAfterSwitch = false;
-    User user;
 
 
     private ActivityResultLauncher<Intent> addCategoryLauncher;
@@ -81,7 +87,6 @@ public class AddTransactionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_transaction);
 
         db = AppDatabase.getDatabase(this);
-        user = db.userDao().getFirstUser();
 
         // Init UI
         remainingTrans = findViewById(R.id.remainingTrans);
@@ -113,6 +118,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         ivCalendar = findViewById(R.id.ivCalendar);
 
         linear_paidTo = findViewById(R.id.linear_paidTo);
+        remainingTrans = findViewById(R.id.remainingTrans);
 
 
 //        btnDelete = findViewById(R.id.btnDelete);
@@ -121,6 +127,14 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         FrameLayout bannerContainer = findViewById(R.id.banner_container);
         AdsManager.loadBanner(this, bannerContainer);
+
+        remainingTrans.setOnClickListener(v -> {
+            Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
+            intent.putExtra("open_fragment", "rewards");
+            startActivity(intent);
+            finish(); // Optional: close AddTransactionActivity
+        });
+
 
         currencySymbol.setText(CurrencyFormatterUtil.getCurrencySymbol());
 
@@ -239,22 +253,34 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // Save
         findViewById(R.id.btnSave).setOnClickListener(v -> {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                try {
+                    // background thread
+                    User u = db.userDao().getFirstUser();
 
-            if (user != null && user.remaining_transaction_cnt > 0) {
-                db.userDao().addRemainingTransactions(user.user_id, -1);
+                    if (u.remaining_transaction_cnt <= 0) {
+                        int pts = u.remaining_transaction_cnt;
+                        runOnUiThread(() -> showNoPointsDialog(pts));
+                        return;
+                    }
 
-                if (transactionId == -1) {
-                    saveTransaction();
-                } else {
-                    updateTransaction();
+                    // call save/update on UI thread (these methods do DB work on background threads themselves)
+                    runOnUiThread(() -> {
+                        if (transactionId == -1) {
+                            saveTransaction();
+                        } else {
+                            updateTransaction();
+                        }
+                    });
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    runOnUiThread(() ->
+                            Toast.makeText(AddTransactionActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                    );
                 }
-
-            } else {
-                Toast.makeText(this, "No remaining transactions", Toast.LENGTH_SHORT).show();
-            }
-
-
+            });
         });
+
 
         // ✅ Check edit mode
         transactionId = getIntent().getLongExtra("transaction_id", -1);
@@ -264,10 +290,72 @@ public class AddTransactionActivity extends AppCompatActivity {
         }
     }
 
+    private void showNoPointsDialog(int currentPoints) {
+        // Inflate the custom layout
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_no_points, null);
+
+        ImageView imgCoin = dialogView.findViewById(R.id.imgCoin);
+        TextView btnGetPoints = dialogView.findViewById(R.id.btnGetPoints);
+        TextView btnCancel = dialogView.findViewById(R.id.btnCancel);
+
+        // Build dialog
+        final androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+
+        // Make background transparent so CardView shadow and rounded corners show properly
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        // Pulse animation for coin
+        ScaleAnimation pulse = new ScaleAnimation(
+                0.95f, 1.05f, // fromX,toX
+                0.95f, 1.05f, // fromY,toY
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        pulse.setDuration(700);
+        pulse.setRepeatCount(Animation.INFINITE);
+        pulse.setRepeatMode(Animation.REVERSE);
+        imgCoin.startAnimation(pulse);
+
+        // Cancel button closes dialog
+        btnCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        // Get Points button opens MainActivity -> RewardsFragment
+        btnGetPoints.setOnClickListener(v -> {
+            Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
+            intent.putExtra("open_fragment", "rewards");
+            // If you want to clear backstack so user doesn't return to AddTransactionActivity, you can add flags:
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            dialog.dismiss();
+            // Optionally finish current activity if you don't want user to return here automatically:
+            finish();
+        });
+
+        // Show dialog
+        dialog.show();
+
+        // Optional: set dialog width to match the card width on some devices (keeps consistent look)
+//        if (dialog.getWindow() != null) {
+//            int width = (int) (getResources().getDisplayMetrics().density * 352); // ~320dp + margins
+//            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+//        }
+    }
+
+
+
+
     private void refreshRemainingTrans() {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
-                final int pts = (user != null) ? user.remaining_transaction_cnt : 0;
+                User localUser = db.userDao().getFirstUser(); // background fetch
+                final int pts = (localUser != null) ? localUser.remaining_transaction_cnt : 0;
                 runOnUiThread(() -> remainingTrans.setText(pts + " pts"));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -275,6 +363,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void resetFlowFlags() {
         isCategorySheetOpenedOnce = false;
@@ -423,6 +512,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         // ✅ Validate Amount first
         if (amountStr.isEmpty()) {
             Toast.makeText(this, "Enter amount", Toast.LENGTH_SHORT).show();
+            ShakeUtil.shake(this, etAmount);
             return;
         }
 
@@ -431,8 +521,15 @@ public class AddTransactionActivity extends AppCompatActivity {
         // ✅ Transfer Logic
         if (currentType.equals("Transfer")) {
 
-            if (selectedSubtypeId == -1 || selectedSubtypeToId == -1) {
-                Toast.makeText(this, "Select From and To Accounts", Toast.LENGTH_SHORT).show();
+            if (selectedSubtypeId == -1 ) {
+                ShakeUtil.shake(this, layoutSubtype);
+                Toast.makeText(this, "Select From Accounts", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (selectedSubtypeToId == -1) {
+                ShakeUtil.shake(this, layoutSubtypeTo);
+                Toast.makeText(this, "Select To Accounts", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -484,6 +581,10 @@ public class AddTransactionActivity extends AppCompatActivity {
                 db.transactionDao().insert(debit);
                 db.transactionDao().insert(credit);
 
+                // decrement in DB (still background)
+                User localUser = db.userDao().getFirstUser();
+                db.userDao().addRemainingTransactions(localUser.user_id, -1);
+
                 runOnUiThread(this::finish);
             });
 
@@ -497,11 +598,13 @@ public class AddTransactionActivity extends AppCompatActivity {
         String payeeStr = etPayee.getText().toString().trim();
 
         if (selectedCategoryId == -1) {
+            ShakeUtil.shake(this, layoutCategory);
             Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (selectedSubtypeId == -1) {
+            ShakeUtil.shake(this, layoutSubtype);
             Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -520,6 +623,9 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.transactionDao().insert(txn);
+
+            User localUser = db.userDao().getFirstUser();
+            db.userDao().addRemainingTransactions(localUser.user_id, -1);
             runOnUiThread(this::finish);
         });
     }
@@ -531,6 +637,7 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // ✅ Validate amount
         if (amountStr.isEmpty()) {
+            ShakeUtil.shake(this, etAmount);
             Toast.makeText(this, "Enter amount", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -543,12 +650,14 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // ✅ Validate category
         if (selectedCategoryId == -1) {
+            ShakeUtil.shake(this, layoutCategory);
             Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // ✅ Validate subtype
         if (selectedSubtypeId == -1) {
+            ShakeUtil.shake(this, layoutSubtype);
             Toast.makeText(this, "Please select a subtype", Toast.LENGTH_SHORT).show();
             return;
         }

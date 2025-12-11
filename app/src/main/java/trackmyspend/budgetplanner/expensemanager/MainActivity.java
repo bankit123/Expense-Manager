@@ -133,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
         navReminder.setOnClickListener(v -> showFragment(reminderFragment, navReminder, iconReminder, titleReminder));
         navReward.setOnClickListener(v -> showFragment(rewardFragment, navReward, iconReward, titleReward)); // ✅ NEW
 
+        // Now handle incoming intent (after nav views & fragments are initialized)
+        String target = getIntent().getStringExtra("open_fragment");
+        if ("rewards".equals(target)) {
+            // Show the reward fragment using your existing helper so nav UI updates correctly
+            showFragment(rewardFragment, navReward, iconReward, titleReward);
+        }
+
+
         // ✅ Upload user info to Firestore once app is fully opened
         uploadUserToFirestore(db);
     }
@@ -179,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
         scaleAnimation.setRepeatCount(1);
         view.startAnimation(scaleAnimation);
     }
+
+//    private void openRewardsFragment() {
+//        // Use the same mechanism as other nav items so nav UI gets updated
+//        showFragment(rewardFragment, navReward, iconReward, titleReward);
+//    }
+
 
     /**
      * ✅ Upload user info to Firestore (first-time only)
