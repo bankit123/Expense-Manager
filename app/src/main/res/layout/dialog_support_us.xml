@@ -7,47 +7,44 @@
     android:background="@drawable/bg_support_dialog"
     android:gravity="center_horizontal">
 
-    <!-- Icon -->
+    <!-- App Icon -->
     <ImageView
-        android:id="@+id/imgCoin"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:src="@drawable/ic_low"
-        android:contentDescription="Rewards"
+        android:src="@drawable/ic_helpus"
+        android:contentDescription="App Icon"
         android:layout_marginBottom="12dp" />
 
     <!-- Title -->
     <TextView
-        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You're out of free transactions ⭐"
+        android:text="Support TrackMySpend ❤️"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/opposite_color"
         android:layout_marginBottom="8dp" />
 
-    <!-- Main Message -->
+    <!-- Message -->
     <TextView
-        android:id="@+id/tvMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Earn points to add more transactions and unlock rewards."
+        android:text="This app is completely free.\nAds help us maintain servers, build new features for you."
         android:textSize="14sp"
         android:textColor="@color/bg_dialog_gray"
         android:gravity="center"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="20dp" />
 
-    <!-- Small Hint -->
     <TextView
         android:id="@+id/tvHint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tip: Visit Rewards to watch short ads or play games to earn points quickly."
+        android:text="Tip: Just watch a 10-second ad. Thank you ❤️"
         android:textSize="12sp"
         android:textColor="@color/bg_dialog_gray"
         android:gravity="center"
         android:layout_marginBottom="20dp" />
+
 
     <!-- Buttons -->
     <LinearLayout
@@ -57,19 +54,19 @@
         android:gravity="end">
 
         <TextView
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnLater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Later"
+            android:text="Got it"
             android:textSize="14sp"
             android:textColor="@color/opposite_color"
             android:padding="10dp" />
 
         <TextView
-            android:id="@+id/btnGetPoints"
+            android:id="@+id/btnRewards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go to Rewards"
+            android:text="Support Us"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@color/nav_icon_active"

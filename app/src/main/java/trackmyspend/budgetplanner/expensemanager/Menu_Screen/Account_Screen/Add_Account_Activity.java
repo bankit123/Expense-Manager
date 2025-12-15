@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.*;
 import java.util.concurrent.Executors;
+
+import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Account;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Subtype;
@@ -58,6 +60,13 @@ public class Add_Account_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_account);
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        AdsManager.loadBanner(this, bannerContainer);
+
+        getWindow().setStatusBarColor(
+                ContextCompat.getColor(this, R.color.main_bg)
+        );
 
         db = AppDatabase.getDatabase(this);
         initViews();

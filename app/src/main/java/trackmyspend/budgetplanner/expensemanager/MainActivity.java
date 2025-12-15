@@ -2,11 +2,13 @@ package trackmyspend.budgetplanner.expensemanager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+
 import com.facebook.FacebookSdk;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +23,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
@@ -38,6 +41,7 @@ import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.Add
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.Recurring_Payment.Worker.RecurringSchedulerWorker;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Analysis_Screen.AnalysisFragment;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home.HomeFragment;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.MemoryVariable;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Reminder_Screen.ReminderFragment;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Reward_Screen.RewardFragment;
 import trackmyspend.budgetplanner.expensemanager.Util.CurrencyFormatterUtil;
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         requestNotificationPermission();
+
 
         // Initialize nav items
         navHome = findViewById(R.id.nav_home);
@@ -143,7 +148,11 @@ public class MainActivity extends AppCompatActivity {
 
         // ✅ Upload user info to Firestore once app is fully opened
         uploadUserToFirestore(db);
+
     }
+
+
+
 
     private void showFragment(Fragment fragment, LinearLayout nav, ImageView icon, TextView title) {
         if (fragment != activeFragment) {
@@ -299,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
         backPressedTime = System.currentTimeMillis();
     }
+
 
 
 }

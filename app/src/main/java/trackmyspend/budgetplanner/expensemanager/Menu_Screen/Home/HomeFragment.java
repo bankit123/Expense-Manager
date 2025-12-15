@@ -1,8 +1,14 @@
 package trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +25,12 @@ import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
+import trackmyspend.budgetplanner.expensemanager.MainActivity;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.Recurring_Payment.Recurring_Payment_Activity;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home.Adapter.DateHeader;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home.Adapter.TransactionGroupedAdapter;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.FilterUtil;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.MemoryVariable;
 import trackmyspend.budgetplanner.expensemanager.Profile.Profile_Activity;
 import trackmyspend.budgetplanner.expensemanager.R;
 import trackmyspend.budgetplanner.expensemanager.Util.CurrencyFormatterUtil;
@@ -157,7 +165,6 @@ public class HomeFragment extends Fragment {
             });
         });
 
-
         return view;
     }
 
@@ -284,43 +291,86 @@ public class HomeFragment extends Fragment {
 
 
 
-//    private List<Object> prepareGroupedItems(List<Transaction> transactions) {
-//        List<Object> items = new ArrayList<>();
-//        Map<String, List<Transaction>> grouped = new LinkedHashMap<>();
-//        SimpleDateFormat keyFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-//
-//        int adFrequency = AdsManager.getTransactionAdFrequency();
-//        int headerCounter = 0;
-//
-//        for (Transaction txn : transactions) {
-//            String key = keyFormat.format(txn.date);
-//            if (!grouped.containsKey(key)) grouped.put(key, new ArrayList<>());
-//            grouped.get(key).add(txn);
-//        }
-//
-//        for (List<Transaction> dayTxns : grouped.values()) {
-//
-//            DateHeader header = new DateHeader(dayTxns.get(0).date, 0, 0);
-//
-//            for (Transaction t : dayTxns) {
-//                if ("Income".equalsIgnoreCase(t.type)) {
-//                    header.incomeTotal += t.amount;
-//                } else if ("Expense".equalsIgnoreCase(t.type)) {
-//                    header.expenseTotal += t.amount;
-//                }
-//            }
-//
-//            items.add(header);
-//            items.addAll(dayTxns);
-//
-//            headerCounter++;
-//
-//            // ✅ Insert ad after every X headers
-//            if (adFrequency > 0 && headerCounter % adFrequency == 0) {
-//                items.add("AD_PLACEHOLDER");
-//            }
-//        }
-//        return items;
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkAndShowSupportDialog();
+    }
+
+    private void checkAndShowSupportDialog() {
+
+        if (!isAdded()) return;
+
+        SharedPreferences appPrefs =
+                requireContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+
+        boolean firestoreUploaded = appPrefs.getBoolean("firestore_uploaded", false);
+        if (!firestoreUploaded) return;
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+            if (!isAdded()) return;
+
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
+
+            if (!MemoryVariable.isSupportDialogShown()
+                    && shouldShowSupportDialog()) {
+
+                MemoryVariable.setSupportDialogShown(true);
+                showSupportUsDialog(activity);
+            }
+
+        }, 1000);
+    }
+
+    private boolean shouldShowSupportDialog() {
+
+        SharedPreferences prefs =
+                requireContext().getSharedPreferences("support_dialog_prefs", Context.MODE_PRIVATE);
+
+        int openCount = prefs.getInt("app_open_count", 0);
+        int frequency = AdsManager.getSupportDialogFrequency();
+
+        if (frequency <= 0) return false;
+
+        openCount++;
+        prefs.edit().putInt("app_open_count", openCount).apply();
+
+        return openCount % frequency == 0;
+    }
+
+
+    private void showSupportUsDialog(Activity activity) {
+        if (!isAdded() || activity == null || activity.isFinishing()) return;
+
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        View view = inflater.inflate(R.layout.dialog_support_us, null);
+
+        TextView btnLater = view.findViewById(R.id.btnLater);
+        TextView btnRewards = view.findViewById(R.id.btnRewards);
+
+        AlertDialog dialog =
+                new AlertDialog.Builder(activity)
+                        .setView(view)
+                        .setCancelable(true)
+                        .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        dialog.show();
+
+        btnLater.setOnClickListener(v -> dialog.dismiss());
+
+        btnRewards.setOnClickListener(v -> {
+            dialog.dismiss();
+
+            // ✅ Show Interstitial Ad
+            AdsManager.showInterstitial(activity);
+        });
+    }
+
 
 }

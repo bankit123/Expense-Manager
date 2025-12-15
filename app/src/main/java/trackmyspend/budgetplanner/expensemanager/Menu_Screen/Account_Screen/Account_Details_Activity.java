@@ -70,6 +70,9 @@ public class Account_Details_Activity extends AppCompatActivity {
 //            rvTransactions.setPadding(0, 0, 0, heightPx);
 //        });
 
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        AdsManager.loadBanner(this, bannerContainer);
+
         ImageView ivPaymentMethodBtn = findViewById(R.id.ivPaymentMethodBtn);
         ivPaymentMethodBtn.setOnClickListener(v -> openSubtypeBottomSheet());
 
@@ -93,7 +96,7 @@ public class Account_Details_Activity extends AppCompatActivity {
         layoutEmptyState = findViewById(R.id.layoutEmptyState);
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
 
-        tvAll = findViewById(R.id.tvAll);
+//        tvAll = findViewById(R.id.tvAll);
         tvMonthly = findViewById(R.id.tvMonthly);
         tvYearly = findViewById(R.id.tvYearly);
         tvPeriod = findViewById(R.id.tvPeriod);
@@ -116,7 +119,7 @@ public class Account_Details_Activity extends AppCompatActivity {
 
 
     private void initDefaults() {
-        setFilterSelected(tvAll, tvMonthly, tvYearly, tvPeriod);
+        setFilterSelected(tvMonthly, tvYearly, tvPeriod);
         selectedTypes.add("Income");
         selectedTypes.add("Expense");
         selectedTypes.add("TransferCredit");
@@ -133,18 +136,18 @@ public class Account_Details_Activity extends AppCompatActivity {
     // ✅ Date Filters
     // -------------------------------------------------------
     private void setupDateFilters() {
-        tvAll.setOnClickListener(v -> {
-            setFilterSelected(tvAll, tvMonthly, tvYearly, tvPeriod);
-            FilterUtil.getAllRange((start, end, label) -> {
-                startDate = start;
-                endDate = end;
-                tvSubtitle.setText(label);
-                loadFilteredTransactions();
-            });
-        });
+//        tvAll.setOnClickListener(v -> {
+//            setFilterSelected(tvAll, tvMonthly, tvYearly, tvPeriod);
+//            FilterUtil.getAllRange((start, end, label) -> {
+//                startDate = start;
+//                endDate = end;
+//                tvSubtitle.setText(label);
+//                loadFilteredTransactions();
+//            });
+//        });
 
         tvMonthly.setOnClickListener(v -> {
-            setFilterSelected(tvMonthly, tvAll, tvYearly, tvPeriod);
+            setFilterSelected(tvMonthly, tvYearly, tvPeriod);
             FilterUtil.getMonthlyRange((start, end, label) -> {
                 startDate = start;
                 endDate = end;
@@ -154,7 +157,7 @@ public class Account_Details_Activity extends AppCompatActivity {
         });
 
         tvYearly.setOnClickListener(v -> {
-            setFilterSelected(tvYearly, tvAll, tvMonthly, tvPeriod);
+            setFilterSelected(tvYearly, tvMonthly, tvPeriod);
             FilterUtil.getYearlyRange((start, end, label) -> {
                 startDate = start;
                 endDate = end;
@@ -164,7 +167,7 @@ public class Account_Details_Activity extends AppCompatActivity {
         });
 
         tvPeriod.setOnClickListener(v -> {
-            setFilterSelected(tvPeriod, tvAll, tvMonthly, tvYearly);
+            setFilterSelected(tvPeriod, tvMonthly, tvYearly);
             FilterUtil.showPeriodPicker(this, getSupportFragmentManager(),
                     (start, end, label) -> {
                         startDate = start;

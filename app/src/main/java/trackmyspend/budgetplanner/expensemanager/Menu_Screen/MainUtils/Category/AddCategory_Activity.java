@@ -13,6 +13,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
 import trackmyspend.budgetplanner.expensemanager.R;
@@ -56,6 +57,9 @@ public class AddCategory_Activity extends AppCompatActivity {
 
         // Back
         ivBack.setOnClickListener(v -> finish());
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        AdsManager.loadBanner(this, bannerContainer);
 
         // Setup icon + color pickers
         CategoryIconColorPickerUtil.setupIconAndColorPicker(

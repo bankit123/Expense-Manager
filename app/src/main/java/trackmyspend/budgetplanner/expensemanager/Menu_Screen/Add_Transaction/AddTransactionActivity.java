@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -216,6 +218,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         setFilterSelected(tvSpend);
         isExpense = true;
         updatePayeeLabel();
+        updateSubtypeMargin(true);
 
         // Clicks
         layoutCategory.setOnClickListener(v -> showCategoryBottomSheet(1));
@@ -229,6 +232,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             currentType = "Expense";
             updatePayeeLabel();
             resetFlowFlags();
+            updateSubtypeMargin(true);
         });
 
         tvIncome.setOnClickListener(v -> {
@@ -237,6 +241,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             currentType = "Income";
             updatePayeeLabel();
             resetFlowFlags();
+            updateSubtypeMargin(true);
         });
 
         tvTransfer.setOnClickListener(v -> {
@@ -807,6 +812,26 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         updatePayeeLabel();
     }
+
+    private void updateSubtypeMargin(boolean isSpendOrIncomeSelected) {
+        View layoutSubtype = findViewById(R.id.layoutSubtype);
+
+        ViewGroup.MarginLayoutParams params =
+                (ViewGroup.MarginLayoutParams) layoutSubtype.getLayoutParams();
+
+        if (isSpendOrIncomeSelected) {
+            params.bottomMargin = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    8,
+                    getResources().getDisplayMetrics()
+            );
+        } else {
+            params.bottomMargin = 0;
+        }
+
+        layoutSubtype.setLayoutParams(params);
+    }
+
 
 
 }

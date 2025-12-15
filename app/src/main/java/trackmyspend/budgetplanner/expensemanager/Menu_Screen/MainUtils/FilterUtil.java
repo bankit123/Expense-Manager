@@ -1,5 +1,6 @@
 package trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.google.android.material.datepicker.CalendarConstraints;
@@ -99,7 +100,10 @@ public class FilterUtil {
     public static void showPeriodPicker(Context context, androidx.fragment.app.FragmentManager fm,
                                         OnDateRangeSelectedListener listener) {
 
-        AdsManager.showInterstitial((android.app.Activity) context);
+        if (MemoryVariable.shouldShowPeriodInterstitial()) {
+            AdsManager.showInterstitial((Activity) context);
+        }
+
 
         MaterialDatePicker.Builder<androidx.core.util.Pair<Long, Long>> builder =
                 MaterialDatePicker.Builder.dateRangePicker();

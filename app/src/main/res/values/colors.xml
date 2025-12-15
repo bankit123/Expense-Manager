@@ -6,6 +6,8 @@
     <color name="opposite_color">#000000</color>
     <color name="same_color">#FFFFFF</color>
     <color name="main_bg">#FFFFFF</color>
+    <color name="bg_dialog">#FFFFFF</color>
+    <color name="bg_dialog_gray">#4A4A4A</color>
 
     <!-- Navbar -->
     <color name="nav_bg">#FAFAFA</color>

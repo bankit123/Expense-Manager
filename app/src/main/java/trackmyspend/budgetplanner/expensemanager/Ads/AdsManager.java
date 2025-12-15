@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,12 +94,90 @@ public class AdsManager {
                 initAdMob(context, TEST_ADS.get("appID"));
                 if (callback != null) callback.onInitialized();
             }
-        }, 5000); // 5 seconds timeout
+        }, 3000); // 5 seconds timeout
 
         fetchAdIdsFromFirebase(context, callback);
     }
 
     // Fetch AdMob IDs from Firebase (new nested structure only)
+//    private static void fetchAdIdsFromFirebase(Context context, InitCallback callback) {
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test_ads");
+//
+//        ref.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful() && task.getResult().exists()) {
+//                adUnits.clear();
+//                DataSnapshot root = task.getResult();
+//
+//                // Expecting new nested structure: test_ads -> ads_id and ads_controller
+//                DataSnapshot adsIdSnap = root.child("ads_id");
+//                DataSnapshot adsCtrlSnap = root.child("ads_controller");
+//
+//                if (adsIdSnap.exists() || adsCtrlSnap.exists()) {
+//
+//                    // Read ads_id children (appID, banner, inter, reward, native, app_open, ...)
+//                    if (adsIdSnap.exists()) {
+//                        for (DataSnapshot child : adsIdSnap.getChildren()) {
+//                            String key = child.getKey();
+//                            Object val = child.getValue();
+//                            if (key != null && val != null) {
+//                                // normalize snake_case app_open -> appOpen
+//
+//                                    adUnits.put(key, String.valueOf(val));
+//
+//                            }
+//                        }
+//                        Log.d(TAG, "DEBUG: ads_id.appOpen -> " + adUnits.get("appOpen"));
+//                    }
+//
+//                    // Read ads_controller children and map known controller keys to internal keys used by getters
+//                    if (adsCtrlSnap.exists()) {
+//                        Object accCntVal = adsCtrlSnap.child("b_acc_details_ads_cnt").getValue();
+//                        if (accCntVal != null) {
+//                            adUnits.put("acc_details_banner_cnt", String.valueOf(accCntVal));
+//                        }
+//
+//                        Object transCntVal = adsCtrlSnap.child("b_home_trans_ads_cnt").getValue();
+//                        if (transCntVal != null) {
+//                            adUnits.put("trans_cnt", String.valueOf(transCntVal));
+//                        }
+//
+//                        // Also store any other controller keys under their original names (stringified)
+//                        for (DataSnapshot child : adsCtrlSnap.getChildren()) {
+//                            String key = child.getKey();
+//                            Object val = child.getValue();
+//                            if (key != null && val != null) {
+//                                if ("b_acc_details_ads_cnt".equals(key) || "b_home_trans_ads_cnt".equals(key)) continue;
+//                                adUnits.put(key, String.valueOf(val));
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    // NEW STRUCTURE MISSING — fallback to TEST_ADS
+//                    Log.e(TAG, "❌ Expected new nested structure (ads_id / ads_controller) not present in Firebase.");
+//                    adUnits.putAll(TEST_ADS);
+//                }
+//
+//                Log.d(TAG, "✅ Firebase ad config loaded (new structure only): " + adUnits);
+//
+//                // Try to find appId from ads_id.appID
+//                String appId = adUnits.get("appID");
+//                if (appId != null && !appId.trim().isEmpty()) {
+//                    initAdMob(context, appId);
+//                } else {
+//                    Log.w(TAG, "⚠️ Missing 'appID' in new structure — using test ads");
+//                    adUnits.putAll(TEST_ADS);
+//                    initAdMob(context, TEST_ADS.get("appID"));
+//                }
+//            } else {
+//                Log.e(TAG, "❌ Firebase fetch failed — using test ads instead");
+//                adUnits.putAll(TEST_ADS);
+//                initAdMob(context, TEST_ADS.get("appID"));
+//            }
+//
+//            if (callback != null) callback.onInitialized();
+//        });
+//    }
+
     private static void fetchAdIdsFromFirebase(Context context, InitCallback callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test_ads");
 
@@ -113,23 +192,25 @@ public class AdsManager {
 
                 if (adsIdSnap.exists() || adsCtrlSnap.exists()) {
 
-                    // Read ads_id children (appID, banner, inter, reward, native, app_open, ...)
+                    // ----------------------------
+                    // Read ads_id
+                    // ----------------------------
                     if (adsIdSnap.exists()) {
                         for (DataSnapshot child : adsIdSnap.getChildren()) {
                             String key = child.getKey();
                             Object val = child.getValue();
                             if (key != null && val != null) {
-                                // normalize snake_case app_open -> appOpen
-
-                                    adUnits.put(key, String.valueOf(val));
-
+                                adUnits.put(key, String.valueOf(val));
                             }
                         }
                         Log.d(TAG, "DEBUG: ads_id.appOpen -> " + adUnits.get("appOpen"));
                     }
 
-                    // Read ads_controller children and map known controller keys to internal keys used by getters
+                    // ----------------------------
+                    // Read ads_controller
+                    // ----------------------------
                     if (adsCtrlSnap.exists()) {
+
                         Object accCntVal = adsCtrlSnap.child("b_acc_details_ads_cnt").getValue();
                         if (accCntVal != null) {
                             adUnits.put("acc_details_banner_cnt", String.valueOf(accCntVal));
@@ -140,16 +221,19 @@ public class AdsManager {
                             adUnits.put("trans_cnt", String.valueOf(transCntVal));
                         }
 
-                        // Also store any other controller keys under their original names (stringified)
+                        // Store all other controller keys
                         for (DataSnapshot child : adsCtrlSnap.getChildren()) {
                             String key = child.getKey();
                             Object val = child.getValue();
                             if (key != null && val != null) {
-                                if ("b_acc_details_ads_cnt".equals(key) || "b_home_trans_ads_cnt".equals(key)) continue;
+                                if ("b_acc_details_ads_cnt".equals(key)
+                                        || "b_home_trans_ads_cnt".equals(key)) continue;
+
                                 adUnits.put(key, String.valueOf(val));
                             }
                         }
                     }
+
                 } else {
                     // NEW STRUCTURE MISSING — fallback to TEST_ADS
                     Log.e(TAG, "❌ Expected new nested structure (ads_id / ads_controller) not present in Firebase.");
@@ -158,7 +242,9 @@ public class AdsManager {
 
                 Log.d(TAG, "✅ Firebase ad config loaded (new structure only): " + adUnits);
 
-                // Try to find appId from ads_id.appID
+                // ----------------------------
+                // Initialize AdMob
+                // ----------------------------
                 String appId = adUnits.get("appID");
                 if (appId != null && !appId.trim().isEmpty()) {
                     initAdMob(context, appId);
@@ -167,6 +253,29 @@ public class AdsManager {
                     adUnits.putAll(TEST_ADS);
                     initAdMob(context, TEST_ADS.get("appID"));
                 }
+
+                // ======================================================
+                // 🔥 PUSH VALUES INTO MemoryVariable (SESSION CACHE)
+                // ======================================================
+                try {
+                    int supportDialogCnt = getSupportDialogFrequency();
+                    int periodCnt = 0;
+
+                    if (adUnits.containsKey("period_cnt")) {
+                        periodCnt = Integer.parseInt(adUnits.get("period_cnt"));
+                    }
+
+
+                    trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.MemoryVariable
+                            .setPeriodAdFrequency(periodCnt);
+
+                    Log.d(TAG, "🧠 MemoryVariable updated → support_dialog_cnt="
+                            + supportDialogCnt + ", period_cnt=" + periodCnt);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "❌ Failed to update MemoryVariable: " + e.getMessage());
+                }
+
             } else {
                 Log.e(TAG, "❌ Firebase fetch failed — using test ads instead");
                 adUnits.putAll(TEST_ADS);
@@ -176,6 +285,7 @@ public class AdsManager {
             if (callback != null) callback.onInitialized();
         });
     }
+
 
     private static void initAdMob(Context context, String appId) {
         try {
@@ -343,7 +453,8 @@ public class AdsManager {
                 }
             });
         } else {
-            Log.w(TAG, "⚠️ Interstitial not ready — preloading...");
+            Log.w(TAG, "⚠️ Ad is not ready — preloading...");
+            Toast.makeText(activity, "Ad is loading, please try again in a moment 🙂", Toast.LENGTH_SHORT).show();
             preloadInterstitial(activity);
             // Option: call callback immediately so UI can continue (you decide; here we call back)
             if (callback != null) {
@@ -391,6 +502,7 @@ public class AdsManager {
             });
         } else {
             Log.w(TAG, "⚠️ Rewarded not ready — preloading...");
+            Toast.makeText(activity, "Ad is loading, please try again in a moment 🙂", Toast.LENGTH_SHORT).show();
             preloadRewarded(activity);
         }
     }
@@ -407,108 +519,6 @@ public class AdsManager {
         adView.setNativeAd(nativeAd);
     }
 
-    // ----------------------------
-    // App Open Ads
-    // ----------------------------
-//    public static void preloadAppOpen(Context context) {
-//        String adUnit = adUnits.get("appOpen");
-//        if (adUnit == null || adUnit.isEmpty()) {
-//            Log.w(TAG, "⚠️ App Open adUnit missing - using test fallback");
-//            adUnit = TEST_ADS.get("appOpen");
-//        }
-//
-//        AdRequest request = new AdRequest.Builder().build();
-//
-//        AppOpenAd.load(context, adUnit, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-//                new AppOpenAd.AppOpenAdLoadCallback() {
-//                    @Override
-//                    public void onAdLoaded(@NonNull AppOpenAd ad) {
-//                        appOpenAd = ad;
-//                        appOpenLoadTime = System.currentTimeMillis();
-//                        Log.d(TAG, "✅ App Open ad loaded — time=" + appOpenLoadTime + " id=" + adUnits.get("appOpen"));
-//                    }
-//
-//                    @Override
-//                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-//                        appOpenAd = null;
-//                        appOpenLoadTime = 0;
-//                        Log.e(TAG, "❌ App Open ad failed to load for id=" + adUnits.get("appOpen") + " : " + loadAdError.getMessage());
-//                    }
-//                });
-//    }
-
-//    private static boolean isAppOpenAdAvailable() {
-//        return appOpenAd != null && (System.currentTimeMillis() - appOpenLoadTime) < APP_OPEN_EXPIRY_MILLIS;
-//    }
-
-    /**
-     * Show App Open and run onComplete after ad dismissed or immediately if no ad available.
-     */
-//    public static void showAppOpen(Activity activity, @Nullable Runnable onComplete) {
-//        if (isShowingAppOpen) {
-//            Log.d(TAG, "ℹ️ App Open already showing");
-//            if (onComplete != null) onComplete.run();
-//            return;
-//        }
-//
-//        Log.d(TAG, "DEBUG showAppOpen(): isAvailable=" + isAppOpenAdAvailable() + " appOpenId=" + adUnits.get("appOpen"));
-//
-//        if (isAppOpenAdAvailable()) {
-//            isShowingAppOpen = true;
-//            appOpenAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-//                @Override
-//                public void onAdDismissedFullScreenContent() {
-//                    Log.d(TAG, "ℹ️ App Open dismissed — clearing and preloading new one");
-//                    appOpenAd = null;
-//                    isShowingAppOpen = false;
-//                    preloadAppOpen(activity);
-//                    if (onComplete != null) {
-//                        try { onComplete.run(); } catch (Exception e) { Log.e(TAG, "onComplete threw: " + e.getMessage()); }
-//                    }
-//                }
-//
-//                @Override
-//                public void onAdFailedToShowFullScreenContent(@NonNull com.google.android.gms.ads.AdError adError) {
-//                    Log.e(TAG, "❌ App Open failed to show: " + adError.getMessage());
-//                    appOpenAd = null;
-//                    isShowingAppOpen = false;
-//                    preloadAppOpen(activity);
-//                    if (onComplete != null) {
-//                        try { onComplete.run(); } catch (Exception e) { Log.e(TAG, "onComplete threw: " + e.getMessage()); }
-//                    }
-//                }
-//
-//                @Override
-//                public void onAdShowedFullScreenContent() {
-//                    Log.d(TAG, "✅ App Open shown");
-//                }
-//            });
-//
-//            try {
-//                appOpenAd.show(activity);
-//            } catch (Exception e) {
-//                Log.e(TAG, "❌ Exception while showing App Open: " + e.getMessage());
-//                isShowingAppOpen = false;
-//                appOpenAd = null;
-//                preloadAppOpen(activity);
-//                if (onComplete != null) onComplete.run();
-//            }
-//        } else {
-//            Log.w(TAG, "⚠️ No App Open available — preloading now and continuing");
-//            preloadAppOpen(activity);
-//            if (onComplete != null) onComplete.run();
-//        }
-//    }
-
-    // Backwards-compatible simple call
-//    public static void showAppOpen(Activity activity) {
-//        showAppOpen(activity, null);
-//    }
-
-    // Helper: query readiness
-//    public static boolean isAppOpenReady() {
-//        return isAppOpenAdAvailable();
-//    }
 
     // ----------------------------
     // Reward callback interface
@@ -539,4 +549,16 @@ public class AdsManager {
             return 0;
         }
     }
+
+    public static int getSupportDialogFrequency() {
+        try {
+            String cnt = adUnits.get("support_dialog_cnt");
+            if (cnt == null) return 0;
+            return Integer.parseInt(cnt.trim());
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+
 }
