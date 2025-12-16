@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.Ads.FacebookBannerAdUtil;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
@@ -93,8 +94,15 @@ public class HomeFragment extends Fragment {
 
         FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
         AdsManager.loadBanner(requireActivity(), bannerContainer);
-//        FrameLayout bannerContainer2 = view.findViewById(R.id.banner_container2);
-//        AdsManager.loadBanner(requireActivity(), bannerContainer2);
+
+//        LinearLayout bannerContainer1 = view.findViewById(R.id.banner_container1);
+//
+//        FacebookBannerAdUtil bannerAdUtil = new FacebookBannerAdUtil();
+//        bannerAdUtil.loadBannerAd(
+//                requireActivity(),
+//                bannerContainer1,
+//                "IMG_16_9_APP_INSTALL#966754755487444_1280620537434196"
+//        );
 
         addRecurring = view.findViewById(R.id.addRecurring);
         payRecurring = view.findViewById(R.id.payRecurring);
@@ -294,7 +302,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkAndShowSupportDialog();
+        //checkAndShowSupportDialog();
     }
 
     private void checkAndShowSupportDialog() {

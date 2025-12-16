@@ -1,5 +1,6 @@
 package trackmyspend.budgetplanner.expensemanager.DB.entities;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 

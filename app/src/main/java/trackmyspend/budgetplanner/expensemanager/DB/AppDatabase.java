@@ -137,7 +137,11 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase db) {
             // Add schema changes for version 3 here
-            db.execSQL("ALTER TABLE users ADD COLUMN remaining_transaction_cnt INTEGER NOT NULL DEFAULT 0");
+            // Add column with DEFAULT = 2 (applies to EXISTING users)
+            db.execSQL(
+                    "ALTER TABLE users " +
+                            "ADD COLUMN remaining_transaction_cnt INTEGER NOT NULL DEFAULT 2"
+            );
         }
     };
 
@@ -170,6 +174,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (database != null) {
                     // ✅ Insert Default User
                     User defaultUser = new User();
+                    defaultUser.remaining_transaction_cnt = 2;   // ✅ SET DEFAULT HERE
                     defaultUser.created_at = new Date();
                     defaultUser.updated_at = new Date();
                     long userId = database.userDao().insert(defaultUser);

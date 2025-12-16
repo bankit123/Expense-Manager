@@ -3,6 +3,7 @@ package trackmyspend.budgetplanner.expensemanager.Ads;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -10,17 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
@@ -179,7 +183,7 @@ public class AdsManager {
 //    }
 
     private static void fetchAdIdsFromFirebase(Context context, InitCallback callback) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test_ads");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("p_ads");
 
         ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
@@ -507,17 +511,42 @@ public class AdsManager {
         }
     }
 
-    private static void populateNativeAdView(NativeAd nativeAd, NativeAdView adView) {
-        ((android.widget.TextView) adView.findViewById(R.id.ad_headline)).setText(nativeAd.getHeadline());
-        ((android.widget.TextView) adView.findViewById(R.id.ad_body)).setText(nativeAd.getBody());
-        ((android.widget.Button) adView.findViewById(R.id.ad_call_to_action)).setText(nativeAd.getCallToAction());
+    public static void preloadNative(Activity activity) {
+        String adUnit = adUnits.get("native");
+        if (adUnit == null || adUnit.isEmpty()) {
+            Log.w(TAG, "⚠️ Native adUnit missing");
+            return;
+        }
 
-        ImageView icon = adView.findViewById(R.id.ad_app_icon);
-        if (nativeAd.getIcon() != null)
-            icon.setImageDrawable(nativeAd.getIcon().getDrawable());
+        VideoOptions videoOptions = new VideoOptions.Builder()
+                .setStartMuted(true)
+                .build();
 
-        adView.setNativeAd(nativeAd);
+        NativeAdOptions adOptions = new NativeAdOptions.Builder()
+                .setVideoOptions(videoOptions)
+                .build();
+
+        AdLoader adLoader = new AdLoader.Builder(activity, adUnit)
+                .forNativeAd(nativeAd -> {
+                    if (nativeAdInstance != null) {
+                        nativeAdInstance.destroy();
+                    }
+                    nativeAdInstance = nativeAd;
+                    Log.d(TAG, "🎬 Native VIDEO Ad preloaded");
+                })
+                .withNativeAdOptions(adOptions)
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError error) {
+                        Log.e(TAG, "❌ Native failed: " + error.getMessage());
+                    }
+                })
+                .build();
+
+        adLoader.loadAd(new AdRequest.Builder().build());
     }
+
+
 
 
     // ----------------------------
