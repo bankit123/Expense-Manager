@@ -103,84 +103,6 @@ public class AdsManager {
         fetchAdIdsFromFirebase(context, callback);
     }
 
-    // Fetch AdMob IDs from Firebase (new nested structure only)
-//    private static void fetchAdIdsFromFirebase(Context context, InitCallback callback) {
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("test_ads");
-//
-//        ref.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful() && task.getResult().exists()) {
-//                adUnits.clear();
-//                DataSnapshot root = task.getResult();
-//
-//                // Expecting new nested structure: test_ads -> ads_id and ads_controller
-//                DataSnapshot adsIdSnap = root.child("ads_id");
-//                DataSnapshot adsCtrlSnap = root.child("ads_controller");
-//
-//                if (adsIdSnap.exists() || adsCtrlSnap.exists()) {
-//
-//                    // Read ads_id children (appID, banner, inter, reward, native, app_open, ...)
-//                    if (adsIdSnap.exists()) {
-//                        for (DataSnapshot child : adsIdSnap.getChildren()) {
-//                            String key = child.getKey();
-//                            Object val = child.getValue();
-//                            if (key != null && val != null) {
-//                                // normalize snake_case app_open -> appOpen
-//
-//                                    adUnits.put(key, String.valueOf(val));
-//
-//                            }
-//                        }
-//                        Log.d(TAG, "DEBUG: ads_id.appOpen -> " + adUnits.get("appOpen"));
-//                    }
-//
-//                    // Read ads_controller children and map known controller keys to internal keys used by getters
-//                    if (adsCtrlSnap.exists()) {
-//                        Object accCntVal = adsCtrlSnap.child("b_acc_details_ads_cnt").getValue();
-//                        if (accCntVal != null) {
-//                            adUnits.put("acc_details_banner_cnt", String.valueOf(accCntVal));
-//                        }
-//
-//                        Object transCntVal = adsCtrlSnap.child("b_home_trans_ads_cnt").getValue();
-//                        if (transCntVal != null) {
-//                            adUnits.put("trans_cnt", String.valueOf(transCntVal));
-//                        }
-//
-//                        // Also store any other controller keys under their original names (stringified)
-//                        for (DataSnapshot child : adsCtrlSnap.getChildren()) {
-//                            String key = child.getKey();
-//                            Object val = child.getValue();
-//                            if (key != null && val != null) {
-//                                if ("b_acc_details_ads_cnt".equals(key) || "b_home_trans_ads_cnt".equals(key)) continue;
-//                                adUnits.put(key, String.valueOf(val));
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    // NEW STRUCTURE MISSING — fallback to TEST_ADS
-//                    Log.e(TAG, "❌ Expected new nested structure (ads_id / ads_controller) not present in Firebase.");
-//                    adUnits.putAll(TEST_ADS);
-//                }
-//
-//                Log.d(TAG, "✅ Firebase ad config loaded (new structure only): " + adUnits);
-//
-//                // Try to find appId from ads_id.appID
-//                String appId = adUnits.get("appID");
-//                if (appId != null && !appId.trim().isEmpty()) {
-//                    initAdMob(context, appId);
-//                } else {
-//                    Log.w(TAG, "⚠️ Missing 'appID' in new structure — using test ads");
-//                    adUnits.putAll(TEST_ADS);
-//                    initAdMob(context, TEST_ADS.get("appID"));
-//                }
-//            } else {
-//                Log.e(TAG, "❌ Firebase fetch failed — using test ads instead");
-//                adUnits.putAll(TEST_ADS);
-//                initAdMob(context, TEST_ADS.get("appID"));
-//            }
-//
-//            if (callback != null) callback.onInitialized();
-//        });
-//    }
 
     private static void fetchAdIdsFromFirebase(Context context, InitCallback callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("p_ads");
@@ -329,7 +251,7 @@ public class AdsManager {
         }
 
         AdView adView = new AdView(activity);
-        adView.setAdSize(AdSize.BANNER);
+        adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
         adView.setAdUnitId(adUnit);
 
         container.removeAllViews();
