@@ -8,7 +8,7 @@ public class PriorityInterstitialController {
                             AdsConfig config,
                             GoogleInterstitialAdHelper.Callback callback) {
 
-        String priority = config.get("priority_ads"); // "google" or "fb"
+        String priority = config.get("priority_inter_ads"); // "google" or "fb"
 
         if ("fb".equalsIgnoreCase(priority)) {
             showFacebookFirst(activity, config, callback);

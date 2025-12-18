@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
@@ -91,9 +92,27 @@ public class TransactionGroupedAdapter extends RecyclerView.Adapter<RecyclerView
         Object item = items.get(position);
 
         if (holder instanceof AdHolder) {
-            AdsManager.loadBanner((Activity) context, ((AdHolder) holder).container);
+
+            FrameLayout bannerContainer = ((AdHolder) holder).container;
+
+            // 🔥 ALWAYS reset for RecyclerView reuse
+            bannerContainer.removeAllViews();
+            bannerContainer.setVisibility(View.GONE);
+
+            // 🔥 Ads config may not be ready yet
+            if (trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig() == null) {
+                return;
+            }
+
+            PriorityBannerController.show(
+                    (Activity) context,
+                    bannerContainer,
+                    trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig()
+            );
+
             return;
         }
+
 
         if (holder instanceof HeaderViewHolder) {
             DateHeader header = (DateHeader) item;

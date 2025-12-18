@@ -348,16 +348,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="16dp"
+                android:background="@color/red"
                 android:visibility="gone" />
-
-<!--            <LinearLayout-->
-<!--                android:id="@+id/banner_container1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:background="@color/red"-->
-<!--                android:layout_alignParentBottom="true"-->
-<!--                android:orientation="vertical"/>-->
-
 
 
             <!-- Transactions Section Header -->

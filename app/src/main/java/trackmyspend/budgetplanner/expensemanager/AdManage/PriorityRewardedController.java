@@ -8,7 +8,7 @@ public class PriorityRewardedController {
                             AdsConfig config,
                             GoogleRewardedAdHelper.Callback callback) {
 
-        String priority = config.get("priority_ads"); // "google" or "fb"
+        String priority = config.get("priority_reward_ads"); // "google" or "fb"
 
         if ("fb".equalsIgnoreCase(priority)) {
             showFacebookFirst(activity, config, callback);

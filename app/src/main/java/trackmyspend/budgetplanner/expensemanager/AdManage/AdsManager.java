@@ -47,6 +47,9 @@ public class AdsManager {
                 GoogleRewardedAdHelper.preload(context, adsConfig);
                 FacebookRewardedAdHelper.preload((Activity) context, adsConfig);
 
+                GoogleNativeAdHelper.preload((Activity) context, AdsManager.getConfig());
+                FacebookNativeAdHelper.preload((Activity) context, AdsManager.getConfig());
+
 
                 RewardedAdHelper.preload(context, adsConfig);
 

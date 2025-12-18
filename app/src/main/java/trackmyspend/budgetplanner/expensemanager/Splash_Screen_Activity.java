@@ -264,7 +264,6 @@ public class Splash_Screen_Activity extends AppCompatActivity {
         // 🌗 Apply theme
         ThemeManager.applyTheme(ThemeManager.getTheme(this));
         com.facebook.ads.AudienceNetworkAds.initialize(this);
-        AdSettings.addTestDevice("1cfdec71-440b-467a-956b-40fe5ea023ec");
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -276,7 +275,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
         Clarity.initialize(getApplicationContext(), config);
 
         db = AppDatabase.getDatabase(this);
-        DatabaseDebugger.logDatabase(db);
+//        DatabaseDebugger.logDatabase(db);
 
         if (!isInternetAvailable()) {
             showNoInternetDialog();
@@ -386,7 +385,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
                     intent = new Intent(this, Onboarding_Activity.class);
                     intent.putExtra("step", "currency");
                 } else {
-                    intent = new Intent(this, AdsTestActivity.class);
+                    intent = new Intent(this, MainActivity.class);
                 }
 
                 runOnUiThread(() -> {

@@ -21,8 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.Ads.FacebookBannerAdUtil;
+import trackmyspend.budgetplanner.expensemanager.AdsTestActivity;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
@@ -93,16 +95,11 @@ public class HomeFragment extends Fragment {
         tvTransactionTitle.setText("Transaction History");
 
         FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
-        AdsManager.loadBanner(requireActivity(), bannerContainer);
-
-//        LinearLayout bannerContainer1 = view.findViewById(R.id.banner_container1);
-//
-//        FacebookBannerAdUtil bannerAdUtil = new FacebookBannerAdUtil();
-//        bannerAdUtil.loadBannerAd(
-//                requireActivity(),
-//                bannerContainer1,
-//                "IMG_16_9_APP_INSTALL#966754755487444_1280620537434196"
-//        );
+        PriorityBannerController.show(
+                requireActivity(),
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig()
+        );
 
         addRecurring = view.findViewById(R.id.addRecurring);
         payRecurring = view.findViewById(R.id.payRecurring);
@@ -256,23 +253,44 @@ public class HomeFragment extends Fragment {
     }
 
     private List<Object> prepareGroupedItems(List<Transaction> transactions) {
+
         List<Object> items = new ArrayList<>();
         Map<String, List<Transaction>> grouped = new LinkedHashMap<>();
-        SimpleDateFormat keyFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        SimpleDateFormat keyFormat =
+                new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 
-        int adFrequency = AdsManager.getTransactionAdFrequency();
-        int txnCounter = 0; // counts transactions added to items
+        // 🔥 NEW Firebase-based ad frequency (as requested)
+        int adFrequency = 0;
 
-        // group by day (keeps insertion order)
+        if (trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig() != null) {
+            String cnt =
+                    trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager
+                            .getConfig()
+                            .get("b_home_trans_ads_cnt"); // Firebase key
+
+            try {
+                adFrequency = Integer.parseInt(cnt);
+            } catch (Exception ignored) {
+                adFrequency = 0;
+            }
+        }
+
+        int txnCounter = 0; // counts ONLY transactions (not headers)
+
+        // ---------------- GROUP BY DAY ----------------
         for (Transaction txn : transactions) {
             String key = keyFormat.format(txn.date);
-            if (!grouped.containsKey(key)) grouped.put(key, new ArrayList<>());
+            if (!grouped.containsKey(key)) {
+                grouped.put(key, new ArrayList<>());
+            }
             grouped.get(key).add(txn);
         }
 
-        // build items: header then its transactions; insert ad after every adFrequency transactions
+        // ---------------- BUILD ITEMS ----------------
         for (List<Transaction> dayTxns : grouped.values()) {
-            DateHeader header = new DateHeader(dayTxns.get(0).date, 0, 0);
+
+            DateHeader header =
+                    new DateHeader(dayTxns.get(0).date, 0, 0);
 
             for (Transaction t : dayTxns) {
                 if ("Income".equalsIgnoreCase(t.type)) {
@@ -288,6 +306,7 @@ public class HomeFragment extends Fragment {
                 items.add(t);
                 txnCounter++;
 
+                // 🔥 Insert ad after every N transactions
                 if (adFrequency > 0 && txnCounter % adFrequency == 0) {
                     items.add("AD_PLACEHOLDER");
                 }

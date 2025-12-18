@@ -1,6 +1,7 @@
 package trackmyspend.budgetplanner.expensemanager;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -10,14 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdView;
+import com.facebook.ads.NativeAdLayout;
+import com.google.android.gms.ads.nativead.NativeAdView;
 
 import trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager;
-import trackmyspend.budgetplanner.expensemanager.AdManage.BannerAdHelper;
 import trackmyspend.budgetplanner.expensemanager.AdManage.GoogleInterstitialAdHelper;
 import trackmyspend.budgetplanner.expensemanager.AdManage.GoogleRewardedAdHelper;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityInterstitialController;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityNativeController;
 import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityRewardedController;
-import trackmyspend.budgetplanner.expensemanager.AdManage.RewardedAdHelper;
 
 public class AdsTestActivity extends AppCompatActivity {
 
@@ -34,45 +37,57 @@ public class AdsTestActivity extends AppCompatActivity {
         Button btnBanner = findViewById(R.id.btnBanner);
         Button btnInterstitial = findViewById(R.id.btnInterstitial);
         Button btnReward = findViewById(R.id.btnReward);
+        Button btnNative = findViewById(R.id.btnNative);
+        LayoutInflater inflater = LayoutInflater.from(this);
 
+// 🔵 Google Native
+        NativeAdView googleNativeAdView =
+                (NativeAdView) LayoutInflater.from(this)
+                        .inflate(R.layout.native_ad_google_video, null);
+
+
+// 🔵 Facebook Native
+        NativeAdLayout facebookNativeLayout =
+                (NativeAdLayout) inflater.inflate(
+                        R.layout.native_ad_facebook,
+                        null
+                );
+
+
+        btnNative.setOnClickListener(v ->{
+            FrameLayout nativeContainer = findViewById(R.id.nativeContainer);
+
+            PriorityNativeController.show(
+                    this,
+                    nativeContainer,
+                    AdsManager.getConfig(),
+                    googleNativeAdView,   // your NativeAdView
+                    facebookNativeLayout  // your NativeAdLayout
+            );
+
+        });
 
         // 🟨 Banner
-        btnBanner.setOnClickListener(v ->
-                BannerAdHelper.show(
-                        this,
-                        bannerContainer,
-                        AdsManager.getConfig(),
-                        new BannerAdHelper.Callback() {
+        btnBanner.setOnClickListener(v -> {
 
-                            @Override
-                            public void onAdMobLoaded() {
-                                Toast.makeText(
-                                        AdsTestActivity.this,
-                                        "AdMob Banner Loaded",
-                                        Toast.LENGTH_SHORT
-                                ).show();
-                            }
+            if (AdsManager.getConfig() == null) {
+                Toast.makeText(
+                        AdsTestActivity.this,
+                        "Ads not ready yet",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
 
-                            @Override
-                            public void onFacebookLoaded() {
-                                Toast.makeText(
-                                        AdsTestActivity.this,
-                                        "Facebook Banner Loaded",
-                                        Toast.LENGTH_SHORT
-                                ).show();
-                            }
+            FrameLayout bannerContainer = findViewById(R.id.bannerContainer);
 
-                            @Override
-                            public void onAllFailed() {
-                                Toast.makeText(
-                                        AdsTestActivity.this,
-                                        "Banner Failed (No Fill)",
-                                        Toast.LENGTH_SHORT
-                                ).show();
-                            }
-                        }
-                )
-        );
+            PriorityBannerController.show(
+                    AdsTestActivity.this,
+                    bannerContainer,
+                    AdsManager.getConfig()
+            );
+        });
+
 
         AdSettings.addTestDevice("1cfdec71-440b-467a-956b-40fe5ea023ec");
 
