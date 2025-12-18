@@ -17,15 +17,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.ads.NativeAdLayout;
+import com.google.android.gms.ads.nativead.NativeAdView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityNativeController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Subtype;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.AddTransactionActivity;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.NativeAdViewUtil;
 import trackmyspend.budgetplanner.expensemanager.R;
 import trackmyspend.budgetplanner.expensemanager.Util.CurrencyFormatterUtil;
 import trackmyspend.budgetplanner.expensemanager.Util.SwipeRevealHelper;
@@ -62,7 +67,6 @@ public class TransactionGroupedAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -93,22 +97,65 @@ public class TransactionGroupedAdapter extends RecyclerView.Adapter<RecyclerView
 
         if (holder instanceof AdHolder) {
 
-            FrameLayout bannerContainer = ((AdHolder) holder).container;
+            FrameLayout adContainer = ((AdHolder) holder).container;
 
-            // 🔥 ALWAYS reset for RecyclerView reuse
-            bannerContainer.removeAllViews();
-            bannerContainer.setVisibility(View.GONE);
+            // 🔥 RecyclerView reuse safety
+            adContainer.removeAllViews();
+            adContainer.setVisibility(View.GONE);
 
-            // 🔥 Ads config may not be ready yet
+            // 🔥 Ads config not ready
             if (trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig() == null) {
                 return;
             }
 
-            PriorityBannerController.show(
-                    (Activity) context,
-                    bannerContainer,
-                    trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig()
-            );
+            String adType =
+                    trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager
+                            .getConfig()
+                            .get("ad_type_in_list");   // "banner" or "native"
+
+            // ================= BANNER =================
+            if ("banner".equalsIgnoreCase(adType)) {
+
+                PriorityBannerController.show(
+                        (Activity) context,
+                        adContainer,
+                        trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                        trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager
+                                .getConfig()
+                                .get("banner_type_list")
+                );
+            }
+
+//            // ================= NATIVE =================
+//            else if ("native".equalsIgnoreCase(adType)) {
+//
+//                LayoutInflater inflater = LayoutInflater.from(context);
+//
+//                // 🔵 Google Native
+//                NativeAdView googleNativeAdView =
+//                        (NativeAdView) inflater.inflate(
+//                                R.layout.native_ad_google_video,
+//                                adContainer,
+//                                false
+//                        );
+//
+//                // 🔵 Facebook Native
+//                NativeAdLayout facebookNativeLayout =
+//                        (NativeAdLayout) inflater.inflate(
+//                                R.layout.native_ad_facebook,
+//                                adContainer,
+//                                false
+//                        );
+//
+//                PriorityNativeController.show(
+//                        (Activity) context,
+//                        adContainer,
+//                        trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+//                        googleNativeAdView,
+//                        facebookNativeLayout
+//                );
+//            }
+
 
             return;
         }
@@ -330,8 +377,6 @@ public class TransactionGroupedAdapter extends RecyclerView.Adapter<RecyclerView
             );
 
 
-
-
             // Category
             if (transaction.category_id != null) {
                 Executors.newSingleThreadExecutor().execute(() -> {
@@ -412,6 +457,7 @@ public class TransactionGroupedAdapter extends RecyclerView.Adapter<RecyclerView
 
     static class AdHolder extends RecyclerView.ViewHolder {
         FrameLayout container;
+
         public AdHolder(@NonNull View itemView) {
             super(itemView);
             container = itemView.findViewById(R.id.banner_container);
@@ -446,7 +492,6 @@ public class TransactionGroupedAdapter extends RecyclerView.Adapter<RecyclerView
             tvDate = itemView.findViewById(R.id.tvDate);
         }
     }
-
 
 
     public void updateData(List<Object> newItems) {

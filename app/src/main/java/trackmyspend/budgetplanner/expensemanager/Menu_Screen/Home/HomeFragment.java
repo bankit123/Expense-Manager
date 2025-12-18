@@ -21,9 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.FacebookNativeAdHelper;
+import trackmyspend.budgetplanner.expensemanager.AdManage.GoogleNativeAdHelper;
 import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
-import trackmyspend.budgetplanner.expensemanager.Ads.FacebookBannerAdUtil;
+
 import trackmyspend.budgetplanner.expensemanager.AdsTestActivity;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
@@ -63,6 +64,8 @@ public class HomeFragment extends Fragment {
     private TextView tvTransactionTitle, tvTransactionSubtitle;
     private final SimpleDateFormat rangeFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
 
+    private boolean nativeRefreshDone = false;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -98,8 +101,12 @@ public class HomeFragment extends Fragment {
         PriorityBannerController.show(
                 requireActivity(),
                 bannerContainer,
-                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig()
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+
         );
+
+
 
         addRecurring = view.findViewById(R.id.addRecurring);
         payRecurring = view.findViewById(R.id.payRecurring);
@@ -173,6 +180,19 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private synchronized void triggerNativeRefreshOnce() {
+        if (nativeRefreshDone) return;
+
+        nativeRefreshDone = true;
+
+        if (adapter != null && isAdded()) {
+            requireActivity().runOnUiThread(() ->
+                    adapter.notifyDataSetChanged()
+            );
+        }
+    }
+
+
     private void loadUserInfo() {
         Executors.newSingleThreadExecutor().execute(() -> {
             User user = db.userDao().getFirstUser();
@@ -223,6 +243,7 @@ public class HomeFragment extends Fragment {
         db.transactionDao().getTransactionsByPeriod(userId, start, end)
                 .observe(getViewLifecycleOwner(), transactions -> {
                     List<Object> items = prepareGroupedItems(transactions);
+
                     if (items.isEmpty()) {
                         rvTransactions.setVisibility(View.GONE);
                         layoutEmptyState.setVisibility(View.VISIBLE);
@@ -324,80 +345,6 @@ public class HomeFragment extends Fragment {
         //checkAndShowSupportDialog();
     }
 
-    private void checkAndShowSupportDialog() {
-
-        if (!isAdded()) return;
-
-        SharedPreferences appPrefs =
-                requireContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-
-        boolean firestoreUploaded = appPrefs.getBoolean("firestore_uploaded", false);
-        if (!firestoreUploaded) return;
-
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-            if (!isAdded()) return;
-
-            Activity activity = getActivity();
-            if (activity == null || activity.isFinishing()) return;
-
-            if (!MemoryVariable.isSupportDialogShown()
-                    && shouldShowSupportDialog()) {
-
-                MemoryVariable.setSupportDialogShown(true);
-                showSupportUsDialog(activity);
-            }
-
-        }, 1000);
-    }
-
-    private boolean shouldShowSupportDialog() {
-
-        SharedPreferences prefs =
-                requireContext().getSharedPreferences("support_dialog_prefs", Context.MODE_PRIVATE);
-
-        int openCount = prefs.getInt("app_open_count", 0);
-        int frequency = AdsManager.getSupportDialogFrequency();
-
-        if (frequency <= 0) return false;
-
-        openCount++;
-        prefs.edit().putInt("app_open_count", openCount).apply();
-
-        return openCount % frequency == 0;
-    }
-
-
-    private void showSupportUsDialog(Activity activity) {
-        if (!isAdded() || activity == null || activity.isFinishing()) return;
-
-        LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.dialog_support_us, null);
-
-        TextView btnLater = view.findViewById(R.id.btnLater);
-        TextView btnRewards = view.findViewById(R.id.btnRewards);
-
-        AlertDialog dialog =
-                new AlertDialog.Builder(activity)
-                        .setView(view)
-                        .setCancelable(true)
-                        .create();
-
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
-
-        dialog.show();
-
-        btnLater.setOnClickListener(v -> dialog.dismiss());
-
-        btnRewards.setOnClickListener(v -> {
-            dialog.dismiss();
-
-            // ✅ Show Interstitial Ad
-            AdsManager.showInterstitial(activity);
-        });
-    }
 
 
 }

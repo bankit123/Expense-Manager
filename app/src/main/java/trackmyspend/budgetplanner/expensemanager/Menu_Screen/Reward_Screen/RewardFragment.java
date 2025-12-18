@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,13 +22,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Reward_Screen.Adapter.GameModel;
@@ -68,6 +72,15 @@ public class RewardFragment extends Fragment {
         TextView tvGames = view.findViewById(R.id.tvMonthly);
         tvPoints = view.findViewById(R.id.tv_points);
         rv = view.findViewById(R.id.rewards_list);
+
+        FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                requireActivity(),
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
+
 
         db = AppDatabase.getDatabase(requireContext());
         queue = Volley.newRequestQueue(requireContext());
@@ -257,23 +270,113 @@ public class RewardFragment extends Fragment {
 
     /** ⭐ JSON: "actionName":"showRewardAd" */
     private void showRewardAd(RewardModel r) {
-        AdsManager.showRewarded(requireActivity(), rewardItem -> {
 
-            int points = r.pointsEarned > 0 ? r.pointsEarned : rewardItem.getAmount();
-            updateUserPoints(points);
+        if (trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig() == null) {
+            Toast.makeText(
+                    requireContext(),
+                    "Ads not ready yet",
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
 
-        });
+        trackmyspend.budgetplanner.expensemanager.AdManage.PriorityRewardedController.show(
+                requireActivity(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                new trackmyspend.budgetplanner.expensemanager.AdManage.GoogleRewardedAdHelper.Callback() {
+
+                    @Override
+                    public void onShown() {
+                        // optional: log or UI feedback
+                    }
+
+                    @Override
+                    public void onRewardEarned() {
+                        // ✅ GIVE REWARD HERE (NEW LOGIC)
+                        int points = r.pointsEarned > 0 ? r.pointsEarned : 1;
+                        updateUserPoints(points);
+                    }
+
+                    @Override
+                    public void onDismissed() {
+                        // no-op (reward already handled)
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        Toast.makeText(
+                                requireContext(),
+                                "No Rewarded Ad Available",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+
+                    @Override
+                    public void onNotReady() {
+                        Toast.makeText(
+                                requireContext(),
+                                "Rewarded Ad Not Ready",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                }
+        );
     }
+
+
+// ------------------- AD FUNCTIONS (CALLED VIA REFLECTION) -------------------
 
     /** ⭐ JSON: "actionName":"showInterstitialAd" */
     private void showInterstitialAd(RewardModel r) {
 
+        if (trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig() == null) {
+            Toast.makeText(
+                    requireContext(),
+                    "Ads not ready yet",
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
+
         int points = r.pointsEarned;
 
-        AdsManager.showInterstitial(requireActivity(), () -> {
-            updateUserPoints(points);
-        });
+        trackmyspend.budgetplanner.expensemanager.AdManage.PriorityInterstitialController.show(
+                requireActivity(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                new trackmyspend.budgetplanner.expensemanager.AdManage.GoogleInterstitialAdHelper.Callback() {
+
+                    @Override
+                    public void onShown() {
+                        // optional: log
+                    }
+
+                    @Override
+                    public void onDismissed() {
+                        // ✅ GIVE REWARD ON CLOSE (NEW LOGIC)
+                        updateUserPoints(points);
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        Toast.makeText(
+                                requireContext(),
+                                "No Interstitial Available",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+
+                    @Override
+                    public void onNotReady() {
+                        Toast.makeText(
+                                requireContext(),
+                                "Interstitial Not Ready",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                }
+        );
     }
+
 
     // ------------------- UPDATE USER POINTS (ONE PLACE ONLY!) -------------------
 
@@ -300,6 +403,7 @@ public class RewardFragment extends Fragment {
             );
         }).start();
     }
+
 
 
     @Override

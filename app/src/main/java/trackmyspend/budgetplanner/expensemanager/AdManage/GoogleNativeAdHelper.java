@@ -41,6 +41,7 @@ public class GoogleNativeAdHelper {
                 .forNativeAd(ad -> {
                     nativeAd = ad;
                     Log.d(TAG, "Native loaded");
+
                 })
                 .withAdListener(new AdListener() {
                     @Override

@@ -1,5 +1,7 @@
 package trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager;
+
 public class MemoryVariable {
 
     /* -------------------------
@@ -10,7 +12,7 @@ public class MemoryVariable {
     /* -------------------------
        Period Interstitial (session based)
        ------------------------- */
-    private static int periodAdFrequency = 0;   // set from Firebase
+    private static int periodAdFrequency = Integer.parseInt(AdsManager.getConfig().get("period_cnt"));   // set from Firebase
     private static int periodClickCounter = 0;
 
     /* -------------------------

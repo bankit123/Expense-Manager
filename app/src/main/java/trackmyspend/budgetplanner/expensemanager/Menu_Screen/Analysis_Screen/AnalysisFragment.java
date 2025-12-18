@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.Graph.CategorySummary;
 import trackmyspend.budgetplanner.expensemanager.DB.Graph.CustomPieChartView;
@@ -59,8 +59,13 @@ public class AnalysisFragment extends Fragment {
         layoutEmptyState = view.findViewById(R.id.layoutEmptyState);
         noGraphPreview = view.findViewById(R.id.noGraphPreview);
 
-//        FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
-//        AdsManager.loadBanner(requireActivity(), bannerContainer);
+        FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                requireActivity(),
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
 
         tvWeekly = view.findViewById(R.id.tvWeekly);
         tvMonthly = view.findViewById(R.id.tvMonthly);

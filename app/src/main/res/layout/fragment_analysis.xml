@@ -63,6 +63,7 @@
 
 
             </LinearLayout>
+
             <!--        filter-->
             <LinearLayout
                 android:id="@+id/filterSegment"
@@ -129,7 +130,6 @@
             </LinearLayout>
 
             <!-- PieChart -->
-
             <trackmyspend.budgetplanner.expensemanager.DB.Graph.CustomPieChartView
                 android:id="@+id/customPieChart"
                 android:layout_width="match_parent"
@@ -187,6 +187,14 @@
                 android:text="Showing transactions"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="12sp" />
+
+            <FrameLayout
+                android:id="@+id/banner_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCategorySummary"

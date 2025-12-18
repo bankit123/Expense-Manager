@@ -1,5 +1,6 @@
 package trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -27,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.dao.SubtypeDao;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
@@ -128,7 +129,13 @@ public class AddTransactionActivity extends AppCompatActivity {
         ImageView ivBack = findViewById(R.id.ivBack);
 
         FrameLayout bannerContainer = findViewById(R.id.banner_container);
-        AdsManager.loadBanner(this, bannerContainer);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
+
 
         remainingTrans.setOnClickListener(v -> {
             Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);

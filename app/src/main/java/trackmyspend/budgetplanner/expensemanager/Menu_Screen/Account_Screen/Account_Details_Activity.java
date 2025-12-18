@@ -24,7 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Account_Screen.bottomsheet.SubtypeBottomSheet;
@@ -63,15 +63,13 @@ public class Account_Details_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_account_details);
 
 
-//        FrameLayout bannerContainer = findViewById(R.id.banner_container);
-//        AdsManager.loadBanner(this, bannerContainer, heightPx -> {
-//            // Only adds padding equal to EXACT ad height
-//            Toast.makeText(this, String.valueOf(heightPx), Toast.LENGTH_SHORT).show();
-//            rvTransactions.setPadding(0, 0, 0, heightPx);
-//        });
-
         FrameLayout bannerContainer = findViewById(R.id.banner_container);
-        AdsManager.loadBanner(this, bannerContainer);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
 
         ImageView ivPaymentMethodBtn = findViewById(R.id.ivPaymentMethodBtn);
         ivPaymentMethodBtn.setOnClickListener(v -> openSubtypeBottomSheet());
@@ -330,7 +328,12 @@ public class Account_Details_Activity extends AppCompatActivity {
 
         int adFrequency = 0;
         try {
-            adFrequency = AdsManager.getAccDetailsBannerAdFrequency();
+            String cnt =
+                    trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager
+                            .getConfig()
+                            .get("b_home_trans_ads_cnt");
+
+            adFrequency = Integer.parseInt(cnt);
         } catch (Exception ignored) {
             adFrequency = 0;
         }

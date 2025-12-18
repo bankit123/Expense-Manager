@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.*;
 import java.util.concurrent.Executors;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Account;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Subtype;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.Category.CategoryIconColorPickerUtil;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.InterstitialAdUtil;
 import trackmyspend.budgetplanner.expensemanager.R;
 
 public class Add_Account_Activity extends AppCompatActivity {
@@ -62,7 +63,14 @@ public class Add_Account_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_add_account);
 
         FrameLayout bannerContainer = findViewById(R.id.banner_container);
-        AdsManager.loadBanner(this, bannerContainer);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
+
+
 
         getWindow().setStatusBarColor(
                 ContextCompat.getColor(this, R.color.main_bg)

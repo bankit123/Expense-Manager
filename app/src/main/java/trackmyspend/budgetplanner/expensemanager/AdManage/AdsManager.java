@@ -41,15 +41,14 @@ public class AdsManager {
                 }
 
                 // Preload (banner loads on demand)
+                GoogleNativeAdHelper.preload((Activity) context, AdsManager.getConfig());
+                FacebookNativeAdHelper.preload((Activity) context, AdsManager.getConfig());
+
                 GoogleInterstitialAdHelper.preload(context, adsConfig);
                 FacebookInterstitialHelper.preload((Activity) context, adsConfig);
 
                 GoogleRewardedAdHelper.preload(context, adsConfig);
                 FacebookRewardedAdHelper.preload((Activity) context, adsConfig);
-
-                GoogleNativeAdHelper.preload((Activity) context, AdsManager.getConfig());
-                FacebookNativeAdHelper.preload((Activity) context, AdsManager.getConfig());
-
 
                 RewardedAdHelper.preload(context, adsConfig);
 

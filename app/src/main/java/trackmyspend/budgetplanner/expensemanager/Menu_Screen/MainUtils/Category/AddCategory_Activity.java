@@ -13,9 +13,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Category;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.InterstitialAdUtil;
 import trackmyspend.budgetplanner.expensemanager.R;
 
 import java.util.concurrent.Executors;
@@ -45,6 +46,8 @@ public class AddCategory_Activity extends AppCompatActivity {
         db = AppDatabase.getDatabase(this);
         isExpense = getIntent().getBooleanExtra("isExpense", true);
 
+        InterstitialAdUtil.showWithToast(this);
+
         // UI
         etNewCategory = findViewById(R.id.etNewCategory);
         iconContainer = findViewById(R.id.iconContainer);
@@ -59,7 +62,13 @@ public class AddCategory_Activity extends AppCompatActivity {
         ivBack.setOnClickListener(v -> finish());
 
         FrameLayout bannerContainer = findViewById(R.id.banner_container);
-        AdsManager.loadBanner(this, bannerContainer);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
+
 
         // Setup icon + color pickers
         CategoryIconColorPickerUtil.setupIconAndColorPicker(

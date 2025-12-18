@@ -32,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.DatabaseDebugger;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
@@ -120,13 +119,20 @@ public class MainActivity extends AppCompatActivity {
         activeFragment = homeFragment;
 
         // Add all fragments once
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.container, homeFragment, "HOME");
-        transaction.add(R.id.container, analysisFragment, "ANALYSIS").hide(analysisFragment);
-        transaction.add(R.id.container, accountFragment, "ACCOUNT").hide(accountFragment);
-        transaction.add(R.id.container, reminderFragment, "REMINDER").hide(reminderFragment);
-        transaction.add(R.id.container, rewardFragment, "BACKUP").hide(rewardFragment); // ✅ NEW
-        transaction.commit();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id.container, homeFragment, "HOME");
+//        transaction.add(R.id.container, analysisFragment, "ANALYSIS").hide(analysisFragment);
+//        transaction.add(R.id.container, accountFragment, "ACCOUNT").hide(accountFragment);
+//        transaction.add(R.id.container, reminderFragment, "REMINDER").hide(reminderFragment);
+//        transaction.add(R.id.container, rewardFragment, "BACKUP").hide(rewardFragment); // ✅ NEW
+//        transaction.commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, homeFragment, "HOME")
+                .commit();
+
+        activeFragment = homeFragment;
 
         // Set default active
         setActive(navHome, iconHome, titleHome);
@@ -152,16 +158,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void showFragment(Fragment fragment,
+                              LinearLayout nav,
+                              ImageView icon,
+                              TextView title) {
 
+        if (fragment == activeFragment) return;
 
-    private void showFragment(Fragment fragment, LinearLayout nav, ImageView icon, TextView title) {
-        if (fragment != activeFragment) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.hide(activeFragment).show(fragment).commit();
-            activeFragment = fragment;
-            setActive(nav, icon, title);
-        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.container, fragment);
+        transaction.commit();
+
+        activeFragment = fragment;
+        setActive(nav, icon, title);
     }
+
 
     private void setActive(LinearLayout activeNav, ImageView activeIcon, TextView activeTitle) {
         resetNavColors();
@@ -308,7 +320,6 @@ public class MainActivity extends AppCompatActivity {
 
         backPressedTime = System.currentTimeMillis();
     }
-
 
 
 }

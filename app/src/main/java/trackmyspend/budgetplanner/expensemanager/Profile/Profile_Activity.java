@@ -3,6 +3,7 @@ package trackmyspend.budgetplanner.expensemanager.Profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -10,6 +11,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.OnBoarding_Screen.Currency_Input_Fragment;
 import trackmyspend.budgetplanner.expensemanager.Profile.Categories.Categories_For_Profile;
 import trackmyspend.budgetplanner.expensemanager.Profile.Subtype.Subtype_For_Profile_Activity;
@@ -35,6 +37,14 @@ public class Profile_Activity extends AppCompatActivity implements Currency_Inpu
 
         // 🔹 Change currency
         changeCurrency.setOnClickListener(v -> openCurrencyChange());
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
 
         LinearLayout AccountLayout = findViewById(R.id.Account);
         AccountLayout.setOnClickListener(v -> {

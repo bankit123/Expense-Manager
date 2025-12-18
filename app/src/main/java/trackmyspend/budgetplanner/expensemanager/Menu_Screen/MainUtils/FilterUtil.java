@@ -11,8 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import trackmyspend.budgetplanner.expensemanager.Ads.AdsManager;
-
 public class FilterUtil {
 
     private static final SimpleDateFormat RANGE_FORMAT =
@@ -101,7 +99,7 @@ public class FilterUtil {
                                         OnDateRangeSelectedListener listener) {
 
         if (MemoryVariable.shouldShowPeriodInterstitial()) {
-            AdsManager.showInterstitial((Activity) context);
+            InterstitialAdUtil.showWithToast((Activity) context);
         }
 
 

@@ -189,5 +189,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="8dp"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
 </LinearLayout>

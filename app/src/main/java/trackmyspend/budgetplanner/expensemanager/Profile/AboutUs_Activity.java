@@ -1,11 +1,13 @@
 package trackmyspend.budgetplanner.expensemanager.Profile;
 
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.R;
 
 
@@ -21,5 +23,14 @@ public class AboutUs_Activity extends AppCompatActivity {
 
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(v -> finish());
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
+
     }
 }

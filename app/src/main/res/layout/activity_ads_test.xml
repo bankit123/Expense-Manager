@@ -21,6 +21,15 @@
             android:layout_height="wrap_content"
             android:text="Show Banner Ad" />
 
+
+        <FrameLayout
+            android:id="@+id/fb_banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/red"
+            android:gravity="center"/>
+
+
         <Button
             android:id="@+id/btnInterstitial"
             android:layout_width="match_parent"

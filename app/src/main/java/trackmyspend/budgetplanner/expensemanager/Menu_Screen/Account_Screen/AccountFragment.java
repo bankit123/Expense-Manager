@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Account;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Account_Screen.Adapter.AccountAdapter;
@@ -50,6 +52,14 @@ public class AccountFragment extends Fragment {
             Intent intent = new Intent(requireContext(), Add_Account_Activity.class);
             startActivity(intent);
         });
+
+        FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                requireActivity(),
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
 
         tvAvailableBalance = view.findViewById(R.id.tvAvailableBalance);
 //        tvAvailableCredit = view.findViewById(R.id.tvAvailableCredit);

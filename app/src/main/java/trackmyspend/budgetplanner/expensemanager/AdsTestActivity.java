@@ -1,6 +1,7 @@
 package trackmyspend.budgetplanner.expensemanager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -9,8 +10,13 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
 import com.facebook.ads.AdSettings;
+import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
+import com.facebook.ads.AudienceNetworkAds;
 import com.facebook.ads.NativeAdLayout;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
@@ -39,6 +45,40 @@ public class AdsTestActivity extends AppCompatActivity {
         Button btnReward = findViewById(R.id.btnReward);
         Button btnNative = findViewById(R.id.btnNative);
         LayoutInflater inflater = LayoutInflater.from(this);
+
+        AudienceNetworkAds.initialize(this);
+
+        FrameLayout container = findViewById(R.id.fb_banner_container);
+
+        fbAdView = new AdView(
+                this,
+                "966754755487444_1282038327292417",
+                AdSize.BANNER_HEIGHT_50
+        );
+
+        container.addView(fbAdView);
+
+        fbAdView.loadAd(
+                fbAdView.buildLoadAdConfig()
+                        .withAdListener(new AdListener() {
+
+                            @Override
+                            public void onAdLoaded(Ad ad) {
+                                Log.d("FB_BANNER", "Banner Loaded");
+                            }
+
+                            @Override
+                            public void onError(Ad ad, AdError error) {
+                                Log.e("FB_BANNER",
+                                        "Failed → " + error.getErrorCode() +
+                                                " | " + error.getErrorMessage());
+                            }
+
+                            @Override public void onAdClicked(Ad ad) {}
+                            @Override public void onLoggingImpression(Ad ad) {}
+                        })
+                        .build()
+        );
 
 // 🔵 Google Native
         NativeAdView googleNativeAdView =
@@ -84,7 +124,8 @@ public class AdsTestActivity extends AppCompatActivity {
             PriorityBannerController.show(
                     AdsTestActivity.this,
                     bannerContainer,
-                    AdsManager.getConfig()
+                    AdsManager.getConfig(),
+                    AdsManager.getConfig().get("banner_type_large")
             );
         });
 

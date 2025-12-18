@@ -2,6 +2,7 @@ package trackmyspend.budgetplanner.expensemanager.Profile.Subtype;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Account;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Subtype;
@@ -41,6 +43,14 @@ public class Subtype_For_Profile_Activity extends AppCompatActivity {
             Intent intent = new Intent(this, Add_Account_Activity.class);
             startActivity(intent);
         });
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
 
 
         rvAccounts = findViewById(R.id.rvAccounts);

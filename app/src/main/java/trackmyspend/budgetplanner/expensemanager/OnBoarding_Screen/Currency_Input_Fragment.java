@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -23,6 +24,7 @@ import androidx.room.Room;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
 import trackmyspend.budgetplanner.expensemanager.MainActivity;
@@ -77,6 +79,14 @@ public class Currency_Input_Fragment extends Fragment {
         btnSave = root.findViewById(R.id.btnSaveCurrency);
         ivBack = root.findViewById(R.id.ivBack);
         View ivBack = root.findViewById(R.id.ivBack);
+
+        FrameLayout bannerContainer = root.findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                requireActivity(),
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_small")
+        );
 
         // ✅ Detect entry point
         if (getArguments() != null) {

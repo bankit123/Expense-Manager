@@ -14,6 +14,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,13 +24,20 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.facebook.ads.NativeAdLayout;
+import com.google.android.gms.ads.nativead.NativeAdView;
+
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityNativeController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.NativeAdViewUtil;
 import trackmyspend.budgetplanner.expensemanager.R;
 
 public class Game_Activity extends AppCompatActivity {
@@ -57,6 +65,34 @@ public class Game_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
+
+//        // Google Native
+//        NativeAdView googleNativeAdView =
+//                NativeAdViewUtil.createGoogleNative(this);
+//
+//// Facebook Native
+//        NativeAdLayout facebookNativeLayout =
+//                NativeAdViewUtil.createFacebookNative(this);
+//
+//
+//        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+//        PriorityNativeController.show(
+//                this,
+//                bannerContainer,
+//                AdsManager.getConfig(),
+//                googleNativeAdView,   // your NativeAdView
+//                facebookNativeLayout  // your NativeAdLayout
+//        );
+
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig().get("banner_type_large")
+        );
+
+
 
         // DB
         db = AppDatabase.getDatabase(this);
