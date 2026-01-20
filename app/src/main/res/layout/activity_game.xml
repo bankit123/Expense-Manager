@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Boom! Points added to your score!"
+                android:text="Thanks for Playing Game!"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 

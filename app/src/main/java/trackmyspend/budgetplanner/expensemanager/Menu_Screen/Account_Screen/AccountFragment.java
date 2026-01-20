@@ -22,6 +22,7 @@ import trackmyspend.budgetplanner.expensemanager.DB.entities.Account;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Account_Screen.Adapter.AccountAdapter;
 import trackmyspend.budgetplanner.expensemanager.R;
 import trackmyspend.budgetplanner.expensemanager.Util.CurrencyFormatterUtil;
+import trackmyspend.budgetplanner.expensemanager.Util.ReviewUtils;
 
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class AccountFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        ReviewUtils.showInAppReview(requireActivity());
 
         btnAddAccount = view.findViewById(R.id.btnAddAccount);
         btnAddAccount.setOnClickListener(v -> {

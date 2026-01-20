@@ -122,7 +122,7 @@ public class Account_Details_Activity extends AppCompatActivity {
         selectedTypes.add("Expense");
         selectedTypes.add("TransferCredit");
         selectedTypes.add("TransferDebit");
-        FilterUtil.getAllRange((start, end, label) -> {
+        FilterUtil.getMonthlyRange((start, end, label) -> {
             startDate = start;
             endDate = end;
             tvSubtitle.setText(label);

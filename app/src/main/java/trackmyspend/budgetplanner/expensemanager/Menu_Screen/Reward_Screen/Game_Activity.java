@@ -208,11 +208,11 @@ public class Game_Activity extends AppCompatActivity {
             runOnUiThread(() -> {
                 points_score.setText(String.valueOf(totalPoints));
                 if (totalPoints == 0) {
-                    title_score.setText("Oops! No Points This Time");
-                    subtitle_score.setText("Play longer to earn points!");
+                    title_score.setText("We Appreciate You!");
+                    subtitle_score.setText("Support us to unlock rewards next time \uD83C\uDFAF");
                 } else {
-                    title_score.setText("Congrats!!!");
-                    subtitle_score.setText("Boom! Points added to your score!");
+                    title_score.setText("Thank You!");
+                    subtitle_score.setText("Your support helps us improve the app ⭐");
                 }
             });
 

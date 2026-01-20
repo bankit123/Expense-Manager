@@ -12,8 +12,8 @@ android {
         applicationId = "trackmyspend.budgetplanner.expensemanager"
         minSdk = 26
         targetSdk = 36
-        versionCode = 8
-        versionName = "0.1.8"
+        versionCode = 9
+        versionName = "0.1.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -80,6 +80,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:2.8.0")
     implementation ("com.facebook.android:audience-network-sdk:6.+")
 
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
 
 }

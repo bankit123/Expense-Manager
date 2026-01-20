@@ -209,6 +209,7 @@
 
 package trackmyspend.budgetplanner.expensemanager;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -264,7 +265,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
 
         // 🌗 Apply theme
         ThemeManager.applyTheme(ThemeManager.getTheme(this));
-        com.facebook.ads.AudienceNetworkAds.initialize(this);
+//        com.facebook.ads.AudienceNetworkAds.initialize(this);
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);

@@ -59,7 +59,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             tvAmountTitle, tvSubtype, tvSubtypeTo;
     private TextView currencySymbol;
     private String currentType = "Expense"; // default
-    TextView remainingTrans;
+//    TextView remainingTrans;
 
     private EditText etPayee, etAmount, etNotes;
     private ImageView ivCalendar, ivCategoryIconTransaction, ivSubtypeIcon, ivSubtypeIconTo;
@@ -92,8 +92,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         db = AppDatabase.getDatabase(this);
 
         // Init UI
-        remainingTrans = findViewById(R.id.remainingTrans);
-        refreshRemainingTrans();
+//        remainingTrans = findViewById(R.id.remainingTrans);
+//        refreshRemainingTrans();
 
         layoutCategory = findViewById(R.id.layoutCategory);
         tvCategory = findViewById(R.id.tvCategory);
@@ -121,7 +121,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         ivCalendar = findViewById(R.id.ivCalendar);
 
         linear_paidTo = findViewById(R.id.linear_paidTo);
-        remainingTrans = findViewById(R.id.remainingTrans);
+//        remainingTrans = findViewById(R.id.remainingTrans);
 
 
 //        btnDelete = findViewById(R.id.btnDelete);
@@ -137,12 +137,12 @@ public class AddTransactionActivity extends AppCompatActivity {
         );
 
 
-        remainingTrans.setOnClickListener(v -> {
-            Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
-            intent.putExtra("open_fragment", "rewards");
-            startActivity(intent);
-            finish(); // Optional: close AddTransactionActivity
-        });
+//        remainingTrans.setOnClickListener(v -> {
+//            Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
+//            intent.putExtra("open_fragment", "rewards");
+//            startActivity(intent);
+//            finish(); // Optional: close AddTransactionActivity
+//        });
 
 
         currencySymbol.setText(CurrencyFormatterUtil.getCurrencySymbol());
@@ -265,32 +265,40 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // Save
         findViewById(R.id.btnSave).setOnClickListener(v -> {
-            Executors.newSingleThreadExecutor().execute(() -> {
-                try {
-                    // background thread
-                    User u = db.userDao().getFirstUser();
 
-                    if (u.remaining_transaction_cnt <= 0) {
-                        int pts = u.remaining_transaction_cnt;
-                        runOnUiThread(() -> showNoPointsDialog(pts));
-                        return;
-                    }
+            if (transactionId == -1) {
+                saveTransaction();
+            } else {
+                updateTransaction();
+            }
 
-                    // call save/update on UI thread (these methods do DB work on background threads themselves)
-                    runOnUiThread(() -> {
-                        if (transactionId == -1) {
-                            saveTransaction();
-                        } else {
-                            updateTransaction();
-                        }
-                    });
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    runOnUiThread(() ->
-                            Toast.makeText(AddTransactionActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show()
-                    );
-                }
-            });
+
+//            Executors.newSingleThreadExecutor().execute(() -> {
+//                try {
+//                    // background thread
+//                    User u = db.userDao().getFirstUser();
+//
+//                    if (u.remaining_transaction_cnt <= 0) {
+//                        int pts = u.remaining_transaction_cnt;
+//                        runOnUiThread(() -> showNoPointsDialog(pts));
+//                        return;
+//                    }
+//
+//                    // call save/update on UI thread (these methods do DB work on background threads themselves)
+//                    runOnUiThread(() -> {
+//                        if (transactionId == -1) {
+//                            saveTransaction();
+//                        } else {
+//                            updateTransaction();
+//                        }
+//                    });
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                    runOnUiThread(() ->
+//                            Toast.makeText(AddTransactionActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show()
+//                    );
+//                }
+//            });
         });
 
 
@@ -363,18 +371,18 @@ public class AddTransactionActivity extends AppCompatActivity {
 
 
 
-    private void refreshRemainingTrans() {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                User localUser = db.userDao().getFirstUser(); // background fetch
-                final int pts = (localUser != null) ? localUser.remaining_transaction_cnt : 0;
-                runOnUiThread(() -> remainingTrans.setText(pts + " pts"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> remainingTrans.setText("0 pts"));
-            }
-        });
-    }
+//    private void refreshRemainingTrans() {
+//        Executors.newSingleThreadExecutor().execute(() -> {
+//            try {
+//                User localUser = db.userDao().getFirstUser(); // background fetch
+//                final int pts = (localUser != null) ? localUser.remaining_transaction_cnt : 0;
+//                runOnUiThread(() -> remainingTrans.setText(pts + " pts"));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                runOnUiThread(() -> remainingTrans.setText("0 pts"));
+//            }
+//        });
+//    }
 
 
     private void resetFlowFlags() {
@@ -594,13 +602,13 @@ public class AddTransactionActivity extends AppCompatActivity {
                 db.transactionDao().insert(credit);
 
                 // decrement in DB (still background)
-                User localUser = db.userDao().getFirstUser();
-                db.userDao().addRemainingTransactions(localUser.user_id, -1);
+//                User localUser = db.userDao().getFirstUser();
+//                db.userDao().addRemainingTransactions(localUser.user_id, -1);
 
                 runOnUiThread(this::finish);
             });
 
-            ReviewUtils.showInAppReview(this);
+
 
             return;
         }
@@ -636,8 +644,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             db.transactionDao().insert(txn);
 
-            User localUser = db.userDao().getFirstUser();
-            db.userDao().addRemainingTransactions(localUser.user_id, -1);
+//            User localUser = db.userDao().getFirstUser();
+//            db.userDao().addRemainingTransactions(localUser.user_id, -1);
             runOnUiThread(this::finish);
         });
     }

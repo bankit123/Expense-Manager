@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:gravity="center"
-                android:text="Version 0.1.8"
+                android:text="Version 0.1.9"
                 android:textColor="@color/opposite_color"
                 android:textSize="16sp" />
 

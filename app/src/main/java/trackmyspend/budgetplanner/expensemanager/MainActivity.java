@@ -24,6 +24,7 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
@@ -32,6 +33,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager;
+import trackmyspend.budgetplanner.expensemanager.AdManage.GoogleInterstitialAdHelper;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityBannerController;
+import trackmyspend.budgetplanner.expensemanager.AdManage.PriorityInterstitialController;
 import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.DatabaseDebugger;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     TextView titleHome, titleAnalysis, titleAccount, titleReminder, titleReward;
     private static final int NOTIFICATION_PERMISSION_CODE = 101;
 
+
     private long backPressedTime = 0;
 
     // Fragments
@@ -86,6 +92,55 @@ public class MainActivity extends AppCompatActivity {
 
         requestNotificationPermission();
 
+        FrameLayout bannerContainer = findViewById(R.id.banner_container);
+        FrameLayout container = findViewById(R.id.container);
+
+        PriorityBannerController.show(
+                this,
+                bannerContainer,
+                AdsManager.getConfig(),
+                AdsManager.getConfig().get("banner_type_small")
+        );
+
+// dp → px
+        int bottomNavPx = (int) (70 * getResources().getDisplayMetrics().density);
+        int bannerPx = (int) (49 * getResources().getDisplayMetrics().density);
+
+        ViewTreeObserver observer = bannerContainer.getViewTreeObserver();
+
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                // 🔴 VERY IMPORTANT: remove listener
+                bannerContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int bannerHeight = bannerContainer.getHeight();
+
+                if (bannerContainer.getVisibility() == View.VISIBLE && bannerHeight > 0) {
+
+                    // ✅ Ad visible → bottom nav + ad
+                    container.setPadding(
+                            container.getPaddingLeft(),
+                            container.getPaddingTop(),
+                            container.getPaddingRight(),
+                            bottomNavPx + bannerPx   // 👈 BEST (dynamic)
+                    );
+
+                } else {
+
+                    // ❌ Ad hidden → only bottom nav
+                    container.setPadding(
+                            container.getPaddingLeft(),
+                            container.getPaddingTop(),
+                            container.getPaddingRight(),
+                            bottomNavPx
+                    );
+                }
+            }
+        });
+
+
 
         // Initialize nav items
         navHome = findViewById(R.id.nav_home);
@@ -106,9 +161,55 @@ public class MainActivity extends AppCompatActivity {
         titleReminder = findViewById(R.id.title_reminder);
         titleReward = findViewById(R.id.title_reward); // ✅ NEW
 
+
         findViewById(R.id.fab_add_transaction).setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AddTransactionActivity.class));
+
+            if (MemoryVariable.shouldShowAddTransactionInterstitial()) {
+
+                trackmyspend.budgetplanner.expensemanager.AdManage.PriorityInterstitialController.show(
+                        MainActivity.this,
+                        trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                        new trackmyspend.budgetplanner.expensemanager.AdManage.GoogleInterstitialAdHelper.Callback() {
+
+                            @Override
+                            public void onShown() {
+                                // optional
+                            }
+
+                            @Override
+                            public void onDismissed() {
+                                // ✅ now open Add Transaction
+                                startActivity(
+                                        new Intent(MainActivity.this, AddTransactionActivity.class)
+                                );
+                            }
+
+                            @Override
+                            public void onFailed() {
+                                // Ad failed → continue flow
+                                startActivity(
+                                        new Intent(MainActivity.this, AddTransactionActivity.class)
+                                );
+                            }
+
+                            @Override
+                            public void onNotReady() {
+                                // Ad not ready → continue flow
+                                startActivity(
+                                        new Intent(MainActivity.this, AddTransactionActivity.class)
+                                );
+                            }
+                        }
+                );
+
+            } else {
+                // No ad → go directly
+                startActivity(
+                        new Intent(MainActivity.this, AddTransactionActivity.class)
+                );
+            }
         });
+
 
         // Initialize fragments
         homeFragment = new HomeFragment();

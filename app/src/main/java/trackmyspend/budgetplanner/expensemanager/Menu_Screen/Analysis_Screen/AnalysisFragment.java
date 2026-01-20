@@ -1,12 +1,16 @@
 package trackmyspend.budgetplanner.expensemanager.Menu_Screen.Analysis_Screen;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +46,9 @@ public class AnalysisFragment extends Fragment {
     private Date startDate, endDate;
     private CategorySummaryAdapter summaryAdapter;
 
+    private static boolean interstitialShownOnce = false;
+
+
     private AppDatabase db;
 
     public AnalysisFragment() {
@@ -52,6 +59,46 @@ public class AnalysisFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_analysis, container, false);
+
+//        Toast.makeText(
+//                requireContext(),
+//                "interstitialShownOnce = " + interstitialShownOnce,
+//                Toast.LENGTH_SHORT
+//        ).show();
+
+
+        if (!interstitialShownOnce) {
+
+            interstitialShownOnce = true; // 🔒 lock immediately
+
+            trackmyspend.budgetplanner.expensemanager.AdManage.PriorityInterstitialController.show(
+                    requireActivity(),
+                    trackmyspend.budgetplanner.expensemanager.AdManage.AdsManager.getConfig(),
+                    new trackmyspend.budgetplanner.expensemanager.AdManage.GoogleInterstitialAdHelper.Callback() {
+
+                        @Override
+                        public void onShown() {
+                            // optional log
+                        }
+
+                        @Override
+                        public void onDismissed() {
+                            // ad closed → continue normal flow
+                        }
+
+                        @Override
+                        public void onFailed() {
+                            // ❌ ad failed → DO NOTHING (no retry)
+                        }
+
+                        @Override
+                        public void onNotReady() {
+                            // ❌ ad not loaded → DO NOTHING
+                        }
+                    }
+            );
+        }
+
 
         tvSelectedFilter = view.findViewById(R.id.tvSelectedFilter);
         tvTransactionSubtitle = view.findViewById(R.id.tvTransactionSubtitle);

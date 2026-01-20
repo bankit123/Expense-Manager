@@ -48,19 +48,19 @@
                     android:layout_centerInParent="true" />
 
                 <!-- Remaining Transactions -->
-                <TextView
-                    android:id="@+id/remainingTrans"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="12"
-                    android:textStyle="bold"
-                    android:textColor="@color/opposite_color"
-                    android:background="@drawable/bg_card_account_details"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="5dp"
-                    android:textSize="10sp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+<!--                <TextView-->
+<!--                    android:id="@+id/remainingTrans"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="12"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/opposite_color"-->
+<!--                    android:background="@drawable/bg_card_account_details"-->
+<!--                    android:paddingHorizontal="8dp"-->
+<!--                    android:paddingVertical="5dp"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true" />-->
 
             </RelativeLayout>
 

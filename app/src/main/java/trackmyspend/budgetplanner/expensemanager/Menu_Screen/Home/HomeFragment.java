@@ -30,10 +30,12 @@ import trackmyspend.budgetplanner.expensemanager.DB.AppDatabase;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.Transaction;
 import trackmyspend.budgetplanner.expensemanager.DB.entities.User;
 import trackmyspend.budgetplanner.expensemanager.MainActivity;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.AddTransactionActivity;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Add_Transaction.Recurring_Payment.Recurring_Payment_Activity;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home.Adapter.DateHeader;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.Home.Adapter.TransactionGroupedAdapter;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.FilterUtil;
+import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.InterstitialAdUtil;
 import trackmyspend.budgetplanner.expensemanager.Menu_Screen.MainUtils.MemoryVariable;
 import trackmyspend.budgetplanner.expensemanager.Profile.Profile_Activity;
 import trackmyspend.budgetplanner.expensemanager.R;
@@ -75,6 +77,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         rvTransactions = view.findViewById(R.id.rvTransactions);
         rvTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -137,7 +140,7 @@ public class HomeFragment extends Fragment {
 
         loadUserInfo();
         // Default → Weekly
-        setFilterSelected(tvWeekly, tvMonthly, tvYearly, tvPeriod);
+        setFilterSelected(tvMonthly, tvYearly, tvPeriod);
         FilterUtil.getWeeklyRange((start, end, label) -> {
             tvTransactionSubtitle.setText(label);
             fetchTransactionsForPeriod(userId, start, end);
@@ -145,16 +148,16 @@ public class HomeFragment extends Fragment {
 
 
         // inside onCreateView or similar
-        tvWeekly.setOnClickListener(v -> {
-            setFilterSelected(tvWeekly, tvMonthly, tvYearly, tvPeriod);
-            FilterUtil.getWeeklyRange((start, end, label) -> {
-                tvTransactionSubtitle.setText(label);
-                fetchTransactionsForPeriod(userId, start, end);
-            });
-        });
+//        tvWeekly.setOnClickListener(v -> {
+//            setFilterSelected(tvWeekly, tvMonthly, tvYearly, tvPeriod);
+//            FilterUtil.getWeeklyRange((start, end, label) -> {
+//                tvTransactionSubtitle.setText(label);
+//                fetchTransactionsForPeriod(userId, start, end);
+//            });
+//        });
 
         tvMonthly.setOnClickListener(v -> {
-            setFilterSelected(tvMonthly, tvWeekly, tvYearly, tvPeriod);
+            setFilterSelected(tvMonthly, tvYearly, tvPeriod);
             FilterUtil.getMonthlyRange((start, end, label) -> {
                 tvTransactionSubtitle.setText(label);
                 fetchTransactionsForPeriod(userId, start, end);
@@ -162,7 +165,7 @@ public class HomeFragment extends Fragment {
         });
 
         tvYearly.setOnClickListener(v -> {
-            setFilterSelected(tvYearly, tvWeekly, tvMonthly, tvPeriod);
+            setFilterSelected(tvYearly, tvMonthly, tvPeriod);
             FilterUtil.getYearlyRange((start, end, label) -> {
                 tvTransactionSubtitle.setText(label);
                 fetchTransactionsForPeriod(userId, start, end);
@@ -170,7 +173,7 @@ public class HomeFragment extends Fragment {
         });
 
         tvPeriod.setOnClickListener(v -> {
-            setFilterSelected(tvPeriod, tvWeekly, tvMonthly, tvYearly);
+            setFilterSelected(tvPeriod, tvMonthly, tvYearly);
             FilterUtil.showPeriodPicker(requireContext(), getParentFragmentManager(), (start, end, label) -> {
                 tvTransactionSubtitle.setText(label);
                 fetchTransactionsForPeriod(userId, start, end);

@@ -40,7 +40,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.VH> {
         RewardModel r = items.get(position);
 
         holder.title.setText(r.title != null ? r.title : "");
-        holder.points.setText(r.pointsEarned + " pts");
+        holder.points.setText(r.pointsEarned + " Support points");
 
         holder.action.setText(r.buttonText != null ? r.buttonText : "Claim");
 

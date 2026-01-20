@@ -83,17 +83,17 @@
                 android:padding="4dp">
 
                 <!-- Weekly -->
-                <TextView
-                    android:id="@+id/tvWeekly"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_segment_unselected"
-                    android:gravity="center"
-                    android:text="Weekly"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="12dp"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tvWeekly"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/bg_segment_unselected"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="Weekly"-->
+<!--                    android:textColor="?attr/colorOnSurfaceVariant"-->
+<!--                    android:textSize="12dp"-->
+<!--                    android:textStyle="bold" />-->
 
                 <!-- Monthly -->
                 <TextView

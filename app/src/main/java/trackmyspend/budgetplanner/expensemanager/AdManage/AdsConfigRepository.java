@@ -15,7 +15,7 @@ public class AdsConfigRepository {
     public static void fetch(Callback callback) {
 
         FirebaseDatabase.getInstance()
-                .getReference("p_ads")
+                .getReference("test_ads")
                 .get()
                 .addOnCompleteListener(task -> {
 

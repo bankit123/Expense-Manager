@@ -33,7 +33,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Earn Reward"
+                        android:text="Support Us"
                         android:textColor="@color/opposite_color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -66,7 +66,7 @@
                             android:scaleType="centerInside"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="4dp"
-                            android:src="@drawable/ic_reward_star" />
+                            android:src="@drawable/ic_supportus" />
 
                         <!-- Text block: 70% -->
                         <LinearLayout
@@ -81,9 +81,9 @@
                                 android:id="@+id/tv_points"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="591 pts"
+                                android:text="591 Times You Supported Us"
                                 android:textColor="@color/opposite_color"
-                                android:textSize="20sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -91,7 +91,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="0dp"
-                                android:text="Total points earned"
+                                android:text="Thank you ❤️"
                                 android:textColor="@color/opposite_color"
                                 android:textSize="12sp" />
 
@@ -112,19 +112,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Earn points and unlock transactions"
+                        android:text="Your support helps us keep the app free"
                         android:textSize="10sp"
                         android:layout_marginStart="6dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1 point = 1 transaction!"
-                        android:textColor="@color/opposite_color"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginStart="6dp"/>
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="1 point = 1 transaction!"-->
+<!--                        android:textColor="@color/opposite_color"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:layout_marginTop="2dp"-->
+<!--                        android:layout_marginStart="6dp"/>-->
 
                 </LinearLayout>
 
@@ -176,7 +176,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/bg_segment_unselected"
                             android:gravity="center"
-                            android:text="Direct Points"
+                            android:text="Direct Support"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="12dp"
                             android:textStyle="bold" />

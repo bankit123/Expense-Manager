@@ -16,6 +16,7 @@ import trackmyspend.budgetplanner.expensemanager.OnBoarding_Screen.Currency_Inpu
 import trackmyspend.budgetplanner.expensemanager.Profile.Categories.Categories_For_Profile;
 import trackmyspend.budgetplanner.expensemanager.Profile.Subtype.Subtype_For_Profile_Activity;
 import trackmyspend.budgetplanner.expensemanager.R;
+import trackmyspend.budgetplanner.expensemanager.Util.ReviewUtils;
 
 public class Profile_Activity extends AppCompatActivity implements Currency_Input_Fragment.OnCurrencySavedListener {
 
@@ -27,6 +28,8 @@ public class Profile_Activity extends AppCompatActivity implements Currency_Inpu
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
+
+        ReviewUtils.showInAppReview(this);
 
         // 🔹 Find the views
         changeCurrency = findViewById(R.id.changeCurrency);

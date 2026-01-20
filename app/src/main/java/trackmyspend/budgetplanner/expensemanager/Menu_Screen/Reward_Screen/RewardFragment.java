@@ -21,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -58,7 +59,10 @@ public class RewardFragment extends Fragment {
     private String currentMode = "direct";
     private static final String REQ_TAG = "REWARDS_REQ";
 
+    private ShimmerFrameLayout shimmerLayout;
+
     private static final int REQ_GAME_ACTIVITY = 3001;
+
 
     public RewardFragment() {}
 
@@ -72,6 +76,11 @@ public class RewardFragment extends Fragment {
         TextView tvGames = view.findViewById(R.id.tvMonthly);
         tvPoints = view.findViewById(R.id.tv_points);
         rv = view.findViewById(R.id.rewards_list);
+
+//        shimmerLayout = view.findViewById(R.id.shimmer_layout);
+//        shimmerLayout.startShimmer();
+//        rv.setVisibility(View.GONE);
+
 
         FrameLayout bannerContainer = view.findViewById(R.id.banner_container);
         PriorityBannerController.show(
@@ -110,7 +119,7 @@ public class RewardFragment extends Fragment {
             // This callback runs on main thread
             currentUser = user;
             int pts = (currentUser != null) ? currentUser.remaining_transaction_cnt : 0;
-            tvPoints.setText(pts + " pts");
+            tvPoints.setText(pts + " Times You Supported Us");
         });
     }
 
@@ -403,8 +412,6 @@ public class RewardFragment extends Fragment {
             );
         }).start();
     }
-
-
 
     @Override
     public void onDestroyView() {

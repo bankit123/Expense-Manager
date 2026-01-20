@@ -3,16 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nav_bg"
+    android:background="@color/main_bg"
     android:fitsSystemWindows="true">
 
     <!-- Content container -->
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="70dp" />
+        android:layout_height="match_parent" />
 
+    <!-- Banner Ad (ABOVE Bottom Menu) -->
+    <FrameLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        android:visibility="visible" />
 
     <!-- Custom Bottom Navbar -->
     <LinearLayout
@@ -20,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="bottom"
+        android:background="@color/nav_bg"
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
@@ -30,8 +38,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_home"
@@ -43,8 +51,8 @@
                 android:id="@+id/title_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Home"
                 android:layout_marginTop="3dp"
+                android:text="Home"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -54,8 +62,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_analysis"
@@ -67,8 +75,8 @@
                 android:id="@+id/title_analysis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Analysis"
                 android:layout_marginTop="3dp"
+                android:text="Analysis"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -83,8 +91,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_account"
@@ -96,8 +104,8 @@
                 android:id="@+id/title_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Account"
                 android:layout_marginTop="3dp"
+                android:text="Account"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -107,9 +115,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:gravity="center">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/icon_reminder"
@@ -121,19 +129,19 @@
                 android:id="@+id/title_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reminder"
                 android:layout_marginTop="3dp"
+                android:text="Reminder"
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <!-- Reminder -->
+        <!-- Reward -->
         <LinearLayout
             android:id="@+id/nav_reward"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon_reward"
@@ -145,8 +153,8 @@
                 android:id="@+id/title_reward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reward"
                 android:layout_marginTop="3dp"
+                android:text="Reward"
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
@@ -157,11 +165,11 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|center"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/fab_ripple"
-        android:layout_marginBottom="35dp"
         android:clickable="true"
-        android:focusable="true"
-        android:elevation="24dp">
+        android:elevation="24dp"
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/fab_icon"
@@ -170,10 +178,6 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_menu_add"
             app:tint="@color/fab_icon" />
-
     </FrameLayout>
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
